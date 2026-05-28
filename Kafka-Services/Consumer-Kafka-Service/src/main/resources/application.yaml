@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Consumer-Kafka-Service
+  kafka:
+    bootstrap-servers: localhost:9093
+
+    consumer:
+      group-id: alarm-group
+      auto-offset-reset: earliest
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring.json.trusted.packages: "*"
+
+
