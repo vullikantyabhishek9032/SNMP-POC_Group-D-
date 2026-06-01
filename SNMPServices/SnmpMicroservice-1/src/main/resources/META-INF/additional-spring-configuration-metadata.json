@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "snmp.manager.host",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.manager.host'"
+  },
+  {
+    "name": "snmp.manager.port",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.manager.port'"
+  },
+  {
+    "name": "snmp.community.public",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.community.public'"
+  },
+  {
+    "name": "snmp.timeout",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.timeout'"
+  },
+  {
+    "name": "snmp.retries",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.retries'"
+  },
+  {
+    "name": "alert.cpu.threshold",
+    "type": "java.lang.String",
+    "description": "A description for 'alert.cpu.threshold'"
+  },
+  {
+    "name": "alert.memory.threshold",
+    "type": "java.lang.String",
+    "description": "A description for 'alert.memory.threshold'"
+  },
+  {
+    "name": "snmp.simulator.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.simulator.enabled'"
+  }
+]}
