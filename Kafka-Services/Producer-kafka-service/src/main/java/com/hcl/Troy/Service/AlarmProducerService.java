@@ -1,33 +1,41 @@
 package com.hcl.Troy.Service;
 
+import com.fasterxml.jackson.databind.Module;
 import com.hcl.Troy.DTO.AlarmEvent;
+import com.hcl.Troy.DTO.AlertEvent;
+import com.hcl.Troy.DTO.MonitoringEvent;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AlarmProducerService {
 
-    private final KafkaTemplate<String, AlarmEvent> kafkaTemplate;
+    private final KafkaTemplate<String, MonitoringEvent> metricsKafkaTemplate;
+
+    private final KafkaTemplate<String, AlertEvent> alertKafkaTemplate;
 
     public AlarmProducerService(
-            KafkaTemplate<String, AlarmEvent> kafkaTemplate) {
+            KafkaTemplate<String, MonitoringEvent> metricsKafkaTemplate,KafkaTemplate<String, AlertEvent> alertKafkaTemplate) {
 
-        this.kafkaTemplate = kafkaTemplate;
+        this.metricsKafkaTemplate = metricsKafkaTemplate;
+        this.alertKafkaTemplate=alertKafkaTemplate;
     }
 
-    public void sendAlarm(AlarmEvent event) {
 
-        kafkaTemplate.send("alarm-events-new", event);
 
-        System.out.println("Alarm Sent");
+    public void publishMetrics(
+            MonitoringEvent event) {
+
+        metricsKafkaTemplate.send(
+                "metrics-topic",
+                event);
     }
 
-    public void publishCritical(AlarmEvent event) {
+    public void publishAlert(
+            AlertEvent event) {
 
-        event.setSeverity("CRITICAL");
-
-        kafkaTemplate.send("critical-alarms", event);
-
-        System.out.println("Critical Alarm Published");
+        alertKafkaTemplate.send(
+                "alerts-topic",
+                event);
     }
 }

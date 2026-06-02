@@ -1,18 +1,47 @@
-package com.hcl.troy.DTO;
+package com.hcl.troy.Entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
-public class Metrics {
+@Entity
+@Table(name = "metrics")
+public class MetricsEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String hostname;
+
     private Double cpuUsage;
+
     private Double memoryUsage;
+
     private Long memoryTotal;
+
     private Long memoryUsed;
+
     private Long memoryAvailable;
+
     private Double diskUsage;
+
     private Long uptime;
-    private LocalDateTime timestamp;
+
+    private LocalDateTime metricTimestamp;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getHostname() {
         return hostname;
@@ -46,6 +75,14 @@ public class Metrics {
         this.memoryTotal = memoryTotal;
     }
 
+    public Long getMemoryAvailable() {
+        return memoryAvailable;
+    }
+
+    public void setMemoryAvailable(Long memoryAvailable) {
+        this.memoryAvailable = memoryAvailable;
+    }
+
     public Long getMemoryUsed() {
         return memoryUsed;
     }
@@ -62,6 +99,14 @@ public class Metrics {
         this.diskUsage = diskUsage;
     }
 
+    public LocalDateTime getMetricTimestamp() {
+        return metricTimestamp;
+    }
+
+    public void setMetricTimestamp(LocalDateTime metricTimestamp) {
+        this.metricTimestamp = metricTimestamp;
+    }
+
     public Long getUptime() {
         return uptime;
     }
@@ -70,23 +115,8 @@ public class Metrics {
         this.uptime = uptime;
     }
 
-    public Long getMemoryAvailable() {
-        return memoryAvailable;
-    }
-
-    public void setMemoryAvailable(Long memoryAvailable) {
-        this.memoryAvailable = memoryAvailable;
-    }
-
-    public LocalDateTime getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Metrics(String hostname, Double cpuUsage, Double memoryUsage, Long memoryTotal, Long memoryUsed, Long memoryAvailable, Double diskUsage, Long uptime, LocalDateTime timestamp) {
+    public MetricsEntity(Long id, String hostname, Double cpuUsage, Double memoryUsage, Long memoryTotal, Long memoryUsed, Long memoryAvailable, Double diskUsage, Long uptime, LocalDateTime metricTimestamp) {
+        this.id = id;
         this.hostname = hostname;
         this.cpuUsage = cpuUsage;
         this.memoryUsage = memoryUsage;
@@ -95,9 +125,9 @@ public class Metrics {
         this.memoryAvailable = memoryAvailable;
         this.diskUsage = diskUsage;
         this.uptime = uptime;
-        this.timestamp = timestamp;
+        this.metricTimestamp = metricTimestamp;
     }
 
-    public Metrics() {
+    public MetricsEntity() {
     }
 }

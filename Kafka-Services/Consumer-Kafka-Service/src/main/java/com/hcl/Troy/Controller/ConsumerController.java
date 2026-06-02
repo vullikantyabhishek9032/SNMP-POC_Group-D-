@@ -1,6 +1,8 @@
 package com.hcl.Troy.Controller;
 
 import com.hcl.Troy.DTO.AlarmEvent;
+import com.hcl.Troy.DTO.AlertEvent;
+import com.hcl.Troy.DTO.MonitoringEvent;
 import com.hcl.Troy.Service.AlarmConsumerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,9 +20,16 @@ public class ConsumerController {
         this.consumerService = consumerService;
     }
 
-    @GetMapping("/events")
-    public List<AlarmEvent> getEvents() {
+    @GetMapping("/metrics/events")
+    public List<MonitoringEvent> getEvents() {
 
         return consumerService.getAllEvents();
     }
+
+    @GetMapping("/alerts/events")
+    public List<AlertEvent> getAlertEvents() {
+
+        return consumerService.getAllAlertEvents();
+    }
+
 }

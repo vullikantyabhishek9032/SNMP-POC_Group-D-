@@ -1,14 +1,23 @@
 package com.hcl.troy.DTO;
 
+
+import lombok.Data;
+
 import java.util.List;
 
-public class MetricsRequest {
+@Data
+public class SnmpResponse {
 
     private boolean success;
+
     private String message;
-    private Metrics metrics;
-    private List<Alert> alerts;
+
+    private SystemMetrics metrics;
+
+    private List<SnmpAlert> alerts;
+
     private Long timestamp;
+
 
     public boolean isSuccess() {
         return success;
@@ -26,19 +35,19 @@ public class MetricsRequest {
         this.message = message;
     }
 
-    public Metrics getMetrics() {
+    public SystemMetrics getMetrics() {
         return metrics;
     }
 
-    public void setMetrics(Metrics metrics) {
+    public void setMetrics(SystemMetrics metrics) {
         this.metrics = metrics;
     }
 
-    public List<Alert> getAlerts() {
+    public List<SnmpAlert> getAlerts() {
         return alerts;
     }
 
-    public void setAlerts(List<Alert> alerts) {
+    public void setAlerts(List<SnmpAlert> alerts) {
         this.alerts = alerts;
     }
 
@@ -48,16 +57,5 @@ public class MetricsRequest {
 
     public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
-    }
-
-    public MetricsRequest(boolean success, String message, Metrics metrics, List<Alert> alerts, Long timestamp) {
-        this.success = success;
-        this.message = message;
-        this.metrics = metrics;
-        this.alerts = alerts;
-        this.timestamp = timestamp;
-    }
-
-    public MetricsRequest() {
     }
 }

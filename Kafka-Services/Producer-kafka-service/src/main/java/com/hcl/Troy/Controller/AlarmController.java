@@ -1,6 +1,8 @@
 package com.hcl.Troy.Controller;
 
 import com.hcl.Troy.DTO.AlarmEvent;
+import com.hcl.Troy.DTO.AlertEvent;
+import com.hcl.Troy.DTO.MonitoringEvent;
 import com.hcl.Troy.Service.AlarmProducerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,24 +11,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/alarms")
+@RequestMapping("/events")
 public class AlarmController {
 
     @Autowired
     private AlarmProducerService producerService;
 
-    @PostMapping
-    public String publishAlarm(@RequestBody AlarmEvent event) {
+    @PostMapping("/metrics")
+    public String publishAlarm(@RequestBody MonitoringEvent event) {
 
-        producerService.sendAlarm(event);
+        producerService.publishMetrics(event);
         return "Alarm Published";
     }
 
-    @PostMapping("/publish/critical")
+    @PostMapping("/publish/alerts")
     public String publishCriticalAlarm(
-            @RequestBody AlarmEvent event) {
+            @RequestBody AlertEvent event) {
 
-        producerService.publishCritical(event);
+        producerService.publishAlert(event);
 
         return "Critical Alarm Published";
     }

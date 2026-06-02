@@ -1,7 +1,11 @@
 package com.hcl.Troy;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.hcl.Troy.DTO.AlarmEvent;
+import com.hcl.Troy.DTO.AlertEvent;
+import com.hcl.Troy.DTO.MonitoringEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +22,7 @@ import java.util.Map;
 public class KafkaConfig {
 
     @Bean
-    public ProducerFactory<String, AlarmEvent> producerFactory() {
+    public ProducerFactory<String, MonitoringEvent> producerFactory() {
 
         Map<String, Object> config = new HashMap<>();
 
@@ -29,20 +33,64 @@ public class KafkaConfig {
 
         config.put(
                 ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class
-        );
+                StringSerializer.class);
 
         config.put(
                 ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class
+                JsonSerializer.class);
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.registerModule(new JavaTimeModule());
+
+        JsonSerializer<MonitoringEvent> serializer =
+                new JsonSerializer<>(mapper);
+
+        return new DefaultKafkaProducerFactory<>(
+                config,
+                new StringSerializer(),
+                serializer);
+    }
+
+    @Bean
+    public KafkaTemplate<String, MonitoringEvent> kafkaTemplate() {
+
+        return new KafkaTemplate<>(producerFactory());
+    }
+
+    @Bean
+    public ProducerFactory<String, AlertEvent> producerAlertFactory() {
+
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(
+                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9092"
         );
+
+        config.put(
+                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
+                StringSerializer.class);
+
+        config.put(
+                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
+                JsonSerializer.class);
 
         return new DefaultKafkaProducerFactory<>(config);
     }
 
     @Bean
-    public KafkaTemplate<String, AlarmEvent> kafkaTemplate() {
+    public KafkaTemplate<String, AlertEvent> kafkaAlertTemplate() {
 
-        return new KafkaTemplate<>(producerFactory());
+        return new KafkaTemplate<>(producerAlertFactory());
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        mapper.registerModule(new JavaTimeModule());
+
+        return mapper;
     }
 }
