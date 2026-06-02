@@ -25,7 +25,7 @@ public class AlertEvent {
 
     private Double threshold;
 
-    private String timestamp;
+    private LocalDateTime timestamp;
 
     public String getAlertId() {
         return alertId;
@@ -83,11 +83,11 @@ public class AlertEvent {
         this.threshold = threshold;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

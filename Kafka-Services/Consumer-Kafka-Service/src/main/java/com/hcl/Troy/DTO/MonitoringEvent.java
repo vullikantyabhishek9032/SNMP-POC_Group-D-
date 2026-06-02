@@ -21,7 +21,7 @@ public class MonitoringEvent {
 
     private String message;
 
-    private String timestamp;
+    private LocalDateTime timestamp;
 
     public String getHostname() {
         return hostname;
@@ -79,15 +79,15 @@ public class MonitoringEvent {
         this.message = message;
     }
 
-    public String getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
-    public MonitoringEvent(String hostname, Double cpuUsage, Double memoryUsage, Double diskUsage, String alertType, String severity, String message, String timestamp) {
+    public MonitoringEvent(String hostname, Double cpuUsage, Double memoryUsage, Double diskUsage, String alertType, String severity, String message, LocalDateTime timestamp) {
         this.hostname = hostname;
         this.cpuUsage = cpuUsage;
         this.memoryUsage = memoryUsage;
