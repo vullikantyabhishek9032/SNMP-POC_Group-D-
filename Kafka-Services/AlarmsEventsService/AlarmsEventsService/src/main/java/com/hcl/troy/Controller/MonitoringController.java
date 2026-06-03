@@ -1,15 +1,13 @@
 package com.hcl.troy.Controller;
 
-import com.hcl.troy.DTO.MetricsRequest;
 import com.hcl.troy.DTO.SnmpResponse;
 import com.hcl.troy.Service.MonitoringService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,6 +21,52 @@ public class MonitoringController {
 
     public MonitoringController(MonitoringService service) {
         this.service = service;
+    }
+
+    @GetMapping("/traps")
+    public String syncTraps() {
+
+        service.syncAllTraps();
+        service.processTraps();
+
+        return "All Traps Synced";
+    }
+
+    @GetMapping("/traps/recent")
+    public String syncRecentTraps(
+            @RequestParam(defaultValue = "10")
+            int limit) {
+
+        service.syncRecentTraps(limit);
+
+        return "Recent Traps Synced";
+    }
+
+    @GetMapping("/traps/host/{host}")
+    public String syncHostTraps(
+            @PathVariable String host) {
+
+        service.syncHostTraps(host);
+
+        return "Host Traps Synced";
+    }
+
+    @GetMapping("/traps/severity/{severity}")
+    public String syncSeverityTraps(
+            @PathVariable String severity) {
+
+        service.syncSeverityTraps(severity);
+
+        return "Severity Traps Synced";
+    }
+
+    @GetMapping("/traps/{trapId}")
+    public String syncTrapById(
+            @PathVariable Long trapId) {
+
+        service.syncTrapById(trapId);
+
+        return "Trap Synced";
     }
 
     @GetMapping("/collect/{hostname}")

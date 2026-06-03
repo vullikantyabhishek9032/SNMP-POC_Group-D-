@@ -3,6 +3,8 @@ package com.hcl.Troy.Service;
 import com.hcl.Troy.DTO.AlarmEvent;
 import com.hcl.Troy.DTO.AlertEvent;
 import com.hcl.Troy.DTO.MonitoringEvent;
+import com.hcl.Troy.DTO.SnmpTrapDTO;
+import com.hcl.Troy.DTO.TrapVarbindDTO;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,11 @@ public class AlarmConsumerService {
             new ArrayList<>();
     private final List<AlertEvent> consumedAlertEvents =
             new ArrayList<>();
+    private final List<SnmpTrapDTO> consumedSnmpTraps =
+            new ArrayList<>();
+    private final List<TrapVarbindDTO> consumedTrapVarbinds =
+            new ArrayList<>();
+
 
     @KafkaListener(
             topics = "metrics-topic",
@@ -33,6 +40,26 @@ public class AlarmConsumerService {
     public void consumeAlerts(AlertEvent event) {
         consumedAlertEvents.add(event);
         System.out.println("Alerts  Received : " + event);
+    }
+
+
+
+    @KafkaListener(
+            topics = "snm-trap-topic",
+            groupId = "metrics-group"
+    )
+    public void consumeSnmpTraps(SnmpTrapDTO event) {
+        consumedSnmpTraps.add(event);
+        System.out.println("Snmp_traps  Received : " + event);
+    }
+
+    @KafkaListener(
+            topics = "trap-varbinds-topic",
+            groupId = "metrics-group"
+    )
+    public void consumeSnmpTraps(TrapVarbindDTO event) {
+        consumedTrapVarbinds.add(event);
+        System.out.println("Trap_varbinds  Received : " + event);
     }
 
 

@@ -2,11 +2,16 @@ package com.hcl.troy.Service;
 
 import com.hcl.troy.DTO.SnmpAlert;
 import com.hcl.troy.DTO.SnmpResponse;
+import com.hcl.troy.DTO.SnmpTrapDTO;
 import com.hcl.troy.DTO.SystemMetrics;
+import com.hcl.troy.DTO.TrapVarbindDTO;
 import com.hcl.troy.Entity.AlertEntity;
 import com.hcl.troy.Entity.MetricsEntity;
+import com.hcl.troy.Entity.SnmpTrapEntity;
+import com.hcl.troy.Entity.TrapVarbindEntity;
 import com.hcl.troy.Repo.AlertRepository;
 import com.hcl.troy.Repo.MetricsRepository;
+import com.hcl.troy.Repo.SnmpTrapRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -25,10 +30,15 @@ public class MonitoringService {
     private final MetricsRepository metricsRepository;
     private final AlertRepository alertRepository;
 
-    public MonitoringService(RestTemplate restTemplate, MetricsRepository metricsRepository, AlertRepository alertRepository) {
+    private final SnmpTrapRepository repository;
+
+    private static final String BASE_URL =
+            "http://localhost:8085/api/traps";
+    public MonitoringService(RestTemplate restTemplate, MetricsRepository metricsRepository, AlertRepository alertRepository, SnmpTrapRepository repository) {
         this.restTemplate = restTemplate;
         this.metricsRepository = metricsRepository;
         this.alertRepository = alertRepository;
+        this.repository = repository;
     }
 
 
@@ -154,6 +164,50 @@ public class MonitoringService {
                 String.class);
     }
 
+    public void publishTraps(SnmpTrapDTO event) {
+
+        restTemplate.postForObject(
+                "http://localhost:8081/events/publish/snmptraps",
+                event,
+                String.class);
+    }
+
+    public  void publishVarbind(TrapVarbindDTO varbind){
+        restTemplate.postForObject(
+                "http://localhost:8081/events/publish/trapvarbind",
+                varbind,
+                String.class);
+    }
+    public void processTraps() {
+        SnmpTrapDTO[] traps =
+                restTemplate.getForObject(
+                        BASE_URL,
+                        SnmpTrapDTO[].class);
+
+
+        if (traps == null) {
+            return;
+        }
+
+        for (SnmpTrapDTO trap : traps) {
+
+            publishTraps(trap);
+
+            if (trap.getVarbinds() != null) {
+
+                for (TrapVarbindDTO varbind : trap.getVarbinds()) {
+
+                    publishVarbind(varbind);
+                }
+            }
+        }
+
+
+
+
+    }
+
+
     public void processMetrics(
             SnmpResponse response) {
 
@@ -172,5 +226,159 @@ public class MonitoringService {
                         publishAlert(alert);
                     });
         }
+    }
+
+
+    public void syncAllTraps() {
+
+        SnmpTrapDTO[] traps =
+                restTemplate.getForObject(
+                        BASE_URL,
+                        SnmpTrapDTO[].class);
+
+        saveTraps(traps);
+    }
+
+    public void syncRecentTraps(int limit) {
+
+        SnmpTrapDTO[] traps =
+                restTemplate.getForObject(
+                        BASE_URL + "/recent?limit=" + limit,
+                        SnmpTrapDTO[].class);
+
+        saveTraps(traps);
+    }
+
+    public void syncHostTraps(String host) {
+
+        SnmpTrapDTO[] traps =
+                restTemplate.getForObject(
+                        BASE_URL + "/host/" + host,
+                        SnmpTrapDTO[].class);
+
+        saveTraps(traps);
+    }
+
+    public void syncSeverityTraps(String severity) {
+
+        SnmpTrapDTO[] traps =
+                restTemplate.getForObject(
+                        BASE_URL + "/severity/" + severity,
+                        SnmpTrapDTO[].class);
+
+        saveTraps(traps);
+    }
+
+    public void syncTrapById(Long trapId) {
+
+        SnmpTrapDTO dto =
+                restTemplate.getForObject(
+                        BASE_URL + "/" + trapId,
+                        SnmpTrapDTO.class);
+
+        if(dto == null) {
+            return;
+        }
+
+        if(repository.existsById(dto.getTrapId())) {
+            return;
+        }
+
+        repository.save(convertToEntity(dto));
+    }
+
+    private void saveTraps(SnmpTrapDTO[] traps) {
+
+        if(traps == null) {
+            return;
+        }
+
+        for(SnmpTrapDTO dto : traps) {
+
+            if(repository.existsById(dto.getTrapId())) {
+                continue;
+            }
+
+            repository.save(convertToEntity(dto));
+
+            log.info("Saved Trap Id : {}", dto.getTrapId());
+        }
+    }
+
+
+
+    public void syncTraps() {
+
+        log.info("===== Starting Trap Sync =====");
+
+        ResponseEntity<SnmpTrapDTO[]> response =
+                restTemplate.getForEntity(
+                        "http://localhost:8085/api/traps",
+                        SnmpTrapDTO[].class);
+
+        SnmpTrapDTO[] traps = response.getBody();
+
+        if (traps == null) {
+            return;
+        }
+
+        for (SnmpTrapDTO dto : traps) {
+            log.info("Processing Trap Id: {}", dto.getTrapId());
+
+            if(repository.existsById(dto.getTrapId())) {
+                log.info("Saved Trap Id: {}", dto.getTrapId());
+                continue;
+
+            }
+
+            SnmpTrapEntity entity =
+                    convertToEntity(dto);
+
+            repository.save(entity);
+
+            log.info("===== Trap Sync Completed =====");
+        }
+    }
+
+    private SnmpTrapEntity convertToEntity(
+            SnmpTrapDTO dto) {
+
+        SnmpTrapEntity trap =
+                new SnmpTrapEntity();
+
+        trap.setTrapId(dto.getTrapId());
+        trap.setTimestamp(dto.getTimestamp());
+        trap.setHost(dto.getHost());
+        trap.setCommunity(dto.getCommunity());
+        trap.setTrapType(dto.getTrapType());
+        trap.setVersion(dto.getVersion());
+        trap.setSnmpTrapOid(dto.getSnmpTrapOid());
+        trap.setSeverity(dto.getSeverity());
+        trap.setMessage(dto.getMessage());
+        trap.setProcessed(dto.getProcessed());
+
+        if(dto.getVarbinds() != null) {
+
+            List<TrapVarbindEntity> varbinds =
+                    dto.getVarbinds()
+                            .stream()
+                            .map(v -> {
+
+                                TrapVarbindEntity entity =
+                                        new TrapVarbindEntity();
+
+                                entity.setOid(v.getOid());
+                                entity.setType(v.getType());
+                                entity.setValue(v.getValue());
+                                entity.setTrap(trap);
+
+                                return entity;
+
+                            }).toList();
+
+            trap.setVarbinds(varbinds);
+        }
+
+        return trap;
     }
 }

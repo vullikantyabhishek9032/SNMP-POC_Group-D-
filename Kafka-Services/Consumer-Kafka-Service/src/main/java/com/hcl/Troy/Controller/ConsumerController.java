@@ -32,4 +32,7 @@ public class ConsumerController {
         return consumerService.getAllAlertEvents();
     }
 
+
+
+
 }
