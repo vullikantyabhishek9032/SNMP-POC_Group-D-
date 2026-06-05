@@ -1,17 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DataGridDemo from "../CommonComponents/CommonTable";
 import { Margin } from "@mui/icons-material";
+import Searchinput from "../CommonComponents/Searchinput";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUsers } from "../Redux/userSlice";
 
 export default function Alaramlist() {
-    const [Data, setData] = useState([]);
 
-    const getResponse = async () => {
-        try {
-            const response = await fetch(``)
-        } catch (error) {
-            console.log("log the error.....")
-        }
-    }
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -63,7 +58,6 @@ export default function Alaramlist() {
             "severity": "MAJOR",
             "status": "ACTIVE",
             "sourceIp": "10.10.1.2",
-            // "createdTime": "2026-05-27 10:40:00"
             createdTime: new Date("2026-05-27 10:40:00").toLocaleDateString("en-GB", {
                 day: "2-digit",
                 month: "short",
@@ -77,7 +71,6 @@ export default function Alaramlist() {
             "severity": "MINOR",
             "status": "CLEARED",
             "sourceIp": "10.10.1.3",
-            // "createdTime": "2026-05-27 11:00:00"
             createdTime: new Date("2026-05-27 11:00:00").toLocaleDateString("en-GB", {
                 day: "2-digit",
                 month: "short",
@@ -91,7 +84,6 @@ export default function Alaramlist() {
             "severity": "MAJOR",
             "status": "ACTIVE",
             "sourceIp": "10.10.1.4",
-            // "createdTime": "2026-05-27 11:15:00"
             createdTime: new Date("2026-05-27 11:15:00").toLocaleDateString("en-GB", {
                 day: "2-digit",
                 month: "short",
@@ -105,7 +97,6 @@ export default function Alaramlist() {
             "severity": "MAJOR",
             "status": "ACTIVE",
             "sourceIp": "10.10.1.4",
-            // "createdTime": "2026-05-27 11:15:00"
             createdTime: new Date("2026-05-28 11:15:00").toLocaleDateString("en-GB", {
                 day: "2-digit",
                 month: "short",
@@ -117,34 +108,32 @@ export default function Alaramlist() {
     const [filter, setFilter] = useState(rows);
 
     const onSearch = (e) => {
-       
-            const value = e.target.value;
 
-            if (!value) {
-                setFilter(rows);
-                return
-            }
-            const filtered = rows.filter((data) => data.deviceName.toLowerCase().includes(value.toLowerCase()))
-            setFilter(filtered);
+        const value = e.target.value;
+
+        if (!value) {
+            setFilter(rows);
+            return
+        }
+        const filtered = rows.filter((data) => data.deviceName.toLowerCase().includes(value.toLowerCase()))
+        setFilter(filtered);
     }
+
+    const dispatch = useDispatch();
+    const { users, loading, error } = useSelector((state) => state.user);
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, [dispatch]);
+    console.log("log the user",users);
 
     return (
         <div style={styles.container}>
-
-            <div style={styles.searchBox}>
-                <input
-                    type="text"
-                    placeholder="Search by Device Name"
-                    style={styles.input}
-                    onChange={(e) => {
-                        onSearch(e)
-                    }}
-                />
-                {/* <button style={styles.button} onClick={() => {
-                    onButtonClick()
-                }}>Search</button> */}
+            <div>
+                <Searchinput PlaceHolder={"Search by Device Name"} search={(e) => {
+                    onSearch(e)
+                }} />
             </div>
-
             <div style={styles.tableContainer}>
                 <DataGridDemo columns={columns} rows={filter} />
             </div>
