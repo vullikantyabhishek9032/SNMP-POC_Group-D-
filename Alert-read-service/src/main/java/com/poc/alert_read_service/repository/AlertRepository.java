@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AlertRepository extends JpaRepository<Alert, String> {
 
+    Alert findByAlertId(String alertId);
+
     List<Alert> findByHostname(String hostname);
 
     List<Alert> findBySeverity(String severity);
