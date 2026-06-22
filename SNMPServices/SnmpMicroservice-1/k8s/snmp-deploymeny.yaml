@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snmp-microservice
+  labels:
+    app: snmp-microservice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snmp-microservice
+  template:
+    metadata:
+      labels:
+        app: snmp-microservice
+    spec:
+      containers:
+        - name: snmp-microservice
+          image: snmp-microservice:1.0   # Change if using Docker Hub
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080   # Spring Boot REST API
+            - containerPort: 161    # SNMP UDP port
+              protocol: UDP
+          env:
+            - name: SERVER_PORT
+              value: "8082"
