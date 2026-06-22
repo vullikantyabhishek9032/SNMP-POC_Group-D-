@@ -1,15 +1,19 @@
 package com.example.snmpmicroservice.controller;
 
+import com.example.snmpmicroservice.Exception.HostnameNotAllowedException;
 import com.example.snmpmicroservice.model.*;
 import com.example.snmpmicroservice.service.SnmpService;
 import com.example.snmpmicroservice.service.SnmpSimulatorService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -28,11 +32,26 @@ public class SnmpController {
     
     @Value("${alert.memory.threshold:85}")
     private double memoryThreshold;
-    
+
+    @Value("#{'${snmp.allowed-hosts:server1}'.split(',')}")
+    private List<String> allowedHosts;
+
     @GetMapping("/metrics/{hostname}")
     public SnmpResponse getMetrics(@PathVariable String hostname) {
         log.info("Fetching metrics for host: {}", hostname);
-        
+
+        if (!allowedHosts.contains(hostname.toLowerCase())) {
+            log.error("Invalid hostname requested: {}", hostname);
+
+           /* SnmpResponse errorResponse = new SnmpResponse();
+            errorResponse.setSuccess(false);
+            errorResponse.setMessage("Invalid hostname: " + hostname);
+            errorResponse.setTimestamp(System.currentTimeMillis());
+
+            return errorResponse;*/
+            throw new HostnameNotAllowedException(hostname);
+        }
+
         SystemMetrics metrics = simulatorEnabled 
             ? simulatorService.generateSimulatedMetrics(hostname)
             : snmpService.querySnmpMetrics(hostname);
