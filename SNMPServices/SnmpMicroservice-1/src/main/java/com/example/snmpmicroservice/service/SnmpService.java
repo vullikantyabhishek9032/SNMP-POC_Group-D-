@@ -1,6 +1,6 @@
 package com.example.snmpmicroservice.service;
 
-import com.example.snmpmicroservice.Exception.SnmpTimeoutException;
+import com.example.snmpmicroservice.exception.SnmpTimeoutException;
 import com.example.snmpmicroservice.config.SnmpConfig;
 import com.example.snmpmicroservice.model.SystemMetrics;
 import lombok.RequiredArgsConstructor;
