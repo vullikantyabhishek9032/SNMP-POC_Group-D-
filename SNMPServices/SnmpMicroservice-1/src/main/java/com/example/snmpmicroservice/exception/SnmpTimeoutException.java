@@ -1,4 +1,4 @@
-package com.example.snmpmicroservice.Exception;
+package com.example.snmpmicroservice.exception;
 
 public class SnmpTimeoutException extends RuntimeException {
 
