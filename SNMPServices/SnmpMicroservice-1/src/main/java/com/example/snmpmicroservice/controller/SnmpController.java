@@ -40,14 +40,6 @@ public class SnmpController {
 
         log.info("Fetching metrics for host: {}", hostname);
         log.info("Allowed hosts in runtime: {}", allowedHosts);
-        System.out.println("Allowed hosts in runtime:**********");
-
-      /*  List<String> allowedList = List.of(allowedHosts.split(","));
-
-        if (allowedList.stream().noneMatch(h -> h.trim().equalsIgnoreCase(hostname))) {
-            log.error("Invalid hostname requested: {}", hostname);
-            throw new HostnameNotAllowedException(hostname);
-        }*/
         List<String> allowedList = Arrays.stream(allowedHosts.split(","))
                 .map(String::trim)
                 .map(String::toLowerCase)
