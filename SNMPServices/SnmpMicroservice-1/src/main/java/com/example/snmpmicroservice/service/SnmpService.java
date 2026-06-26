@@ -1,5 +1,6 @@
 package com.example.snmpmicroservice.service;
 
+import com.example.snmpmicroservice.exception.SnmpTimeoutException;
 import com.example.snmpmicroservice.config.SnmpConfig;
 import com.example.snmpmicroservice.model.SystemMetrics;
 import lombok.RequiredArgsConstructor;
@@ -70,6 +71,7 @@ public class SnmpService {
             
         } catch (IOException e) {
             log.error("SNMP query failed for {}", hostname, e);
+            throw new SnmpTimeoutException("SNMP Timeout for host: " + hostname);
         }
         
         return metrics;
@@ -89,6 +91,7 @@ public class SnmpService {
             }
         } catch (Exception e) {
             log.debug("Failed to get OID {}", oid, e);
+            throw new SnmpTimeoutException("SNMP OID fetch failed: " + oid);
         }
         return null;
     }
