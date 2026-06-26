@@ -1,5 +1,4 @@
-
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
     Box,
     Card,
@@ -12,62 +11,48 @@ import {
     TableHead,
     TableRow,
     Paper,
-    Button,
+    IconButton,
 } from "@mui/material";
-import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-const cards = [
-    {
-        id: 1,
-        title: 'Alarms',
-        description: "5",
-    },
-    {
-        id: 2,
-        title: 'Events',
-        description: "4",
-    },
-    {
-        id: 3,
-        title: 'Performance',
-        description: '0',
-    },
-    {
-        id: 4,
-        title: "Devices",
-        description: "0"
-    }
-];
-
 export default function SelectActionCard() {
-
+    const [data, setData] = useState({
+        totalAlerts: 13,
+        criticalAlerts: 8,
+        highCpuDevices: 10,
+        highMemoryDevices: 11
+    }
+    )
+    const cards = [
+        { id: 1, title: "Alerts", description: data.totalAlerts },
+        { id: 2, title: "Critical Alerts", description: data.criticalAlerts },
+        { id: 3, title: "Cpu Devices", description: data.highCpuDevices },
+        { id: 4, title: "Memory Devices", description: data.highMemoryDevices },
+    ];
     const [selectedCard, setSelectedCard] = React.useState(0);
-
     const navigate = useNavigate();
 
     const handleCardClick = (index) => {
-        if (index === 0) {
-            navigate("/alarms/active")
-        } else if (index === 1) {
-            navigate("/events/list")
-        } else if (index === 2) {
-            navigate("/performance")
-        } else if (index === 3) {
-            navigate("/devices")
-        }
-        // setSelectedCard(index)
-    }
+        const routes = ["/alarms/active", "/alarms/history", "/devices/cpu", "/devices/memory"];
+        navigate(routes[index]);
+    };
+
+    // useEffect(() => {
+    //     setData()
+    // }, [])
 
     return (
-        <Box sx={{ padding: 3 }}>
+        <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
 
             <Box
                 sx={{
-                    width: "100%",
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
+                    gridTemplateColumns: {
+                        xs: "1fr",          // mobile
+                        sm: "repeat(2, 1fr)", // tablet
+                        md: "repeat(4, 1fr)", // desktop
+                    },
                     gap: 2,
                 }}
             >
@@ -76,40 +61,39 @@ export default function SelectActionCard() {
                         key={card.id}
                         sx={{
                             borderRadius: 3,
-                            border: "2px solid transparent",
                             background:
                                 selectedCard === index
                                     ? "linear-gradient(135deg, #1976d2, #42a5f5)"
                                     : "#fff",
                             color: selectedCard === index ? "#fff" : "inherit",
-                            transition: "all 0.3s ease",
-                            boxShadow:
-                                selectedCard === index
-                                    ? "0px 8px 20px rgba(25, 118, 210, 0.5)"
-                                    : "0px 2px 8px rgba(0,0,0,0.1)",
-
+                            transition: "0.3s",
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-between",
-
                         }}
                     >
                         <CardActionArea onClick={() => setSelectedCard(index)}>
                             <CardContent>
-                                <Typography variant="h6">{card.title}</Typography>
-                                <Typography variant="body2">
+                                <Typography
+                                    variant="h6"
+                                    sx={{ fontSize: { xs: 16, md: 18 } }}
+                                >
+                                    {card.title}
+                                </Typography>
+                                <Typography
+                                    variant="body1"
+                                    sx={{ fontSize: { xs: 14, md: 16 } }}
+                                >
                                     {card.description}
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
 
                         <IconButton
-                            sx={{
-                                alignSelf: "flex-end",
-                            }}
+                            sx={{ alignSelf: "flex-end" }}
                             onClick={(e) => {
                                 e.stopPropagation();
-                                handleCardClick(index)
+                                handleCardClick(index);
                             }}
                         >
                             <ArrowForwardIcon />
@@ -117,38 +101,45 @@ export default function SelectActionCard() {
                     </Card>
                 ))}
             </Box>
+
             <Box
                 sx={{
-                    marginTop: 4,
+                    mt: 3,
                     display: "grid",
-                    gridTemplateColumns: "30% 70%",
+                    gridTemplateColumns: {
+                        xs: "1fr",        // mobile
+                        md: "30% 70%",   // desktop
+                    },
                     gap: 2,
                 }}
             >
 
                 <Paper elevation={3}>
-                    <Typography sx={{ p: 2, fontWeight: "bold" }}>
+                    <Typography sx={{ p: 2, fontWeight: "bold", fontSize: { xs: 14, md: 16 } }}>
                         Logs Info
                     </Typography>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell><b>ID</b></TableCell>
-                                <TableCell><b>Log Name</b></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {[
-                                { id: 1, logName: "System Logs" },
-                                { id: 2, logName: "Error Logs" },
-                            ].slice(0, 4).map((row) => (
-                                <TableRow key={row.id}>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.logName}</TableCell>
+
+                    <Box sx={{ overflowX: "auto" }}>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell><b>ID</b></TableCell>
+                                    <TableCell><b>Log Name</b></TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHead>
+                            <TableBody>
+                                {[
+                                    { id: 1, logName: "System Logs" },
+                                    { id: 2, logName: "Error Logs" },
+                                ].map((row) => (
+                                    <TableRow key={row.id}>
+                                        <TableCell>{row.id}</TableCell>
+                                        <TableCell>{row.logName}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Box>
 
                     <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
                         <IconButton
@@ -162,46 +153,39 @@ export default function SelectActionCard() {
                             <ArrowForwardIcon />
                         </IconButton>
                     </Box>
-
                 </Paper>
 
                 <Paper elevation={3}>
-                    <Typography sx={{ p: 2, fontWeight: "bold" }}>
+                    <Typography sx={{ p: 2, fontWeight: "bold", fontSize: { xs: 14, md: 16 } }}>
                         Performance Dashboard
                     </Typography>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                <TableCell><b>ID</b></TableCell>
-                                <TableCell><b>Performance Name</b></TableCell>
-                                <TableCell><b>Available %</b></TableCell>
-                                <TableCell><b>Utilized</b></TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {[
-                                {
-                                    id: 1,
-                                    name: "CPU",
-                                    available: "40%",
-                                    utilized: "60%",
-                                },
-                                {
-                                    id: 2,
-                                    name: "Memory",
-                                    available: "30%",
-                                    utilized: "70%",
-                                },
-                            ].slice(0, 4).map((row) => (
-                                <TableRow key={row.id}>
-                                    <TableCell>{row.id}</TableCell>
-                                    <TableCell>{row.name}</TableCell>
-                                    <TableCell>{row.available}</TableCell>
-                                    <TableCell>{row.utilized}</TableCell>
+
+                    <Box sx={{ overflowX: "auto" }}>
+                        <Table size="small">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell><b>ID</b></TableCell>
+                                    <TableCell><b>Name</b></TableCell>
+                                    <TableCell><b>Available %</b></TableCell>
+                                    <TableCell><b>Utilized</b></TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
+                            </TableHead>
+                            <TableBody>
+                                {[
+                                    { id: 1, name: "CPU", available: "40%", utilized: "60%" },
+                                    { id: 2, name: "Memory", available: "30%", utilized: "70%" },
+                                ].map((row) => (
+                                    <TableRow key={row.id}>
+                                        <TableCell>{row.id}</TableCell>
+                                        <TableCell>{row.name}</TableCell>
+                                        <TableCell>{row.available}</TableCell>
+                                        <TableCell>{row.utilized}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </Box>
+
                     <Box sx={{ display: "flex", justifyContent: "flex-end", p: 1 }}>
                         <IconButton
                             onClick={() => navigate("/performance")}

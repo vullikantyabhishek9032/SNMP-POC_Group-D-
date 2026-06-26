@@ -28,12 +28,22 @@ export default function PermanentDrawerLeft({ children }) {
 
     const menu = [
         { title: "Dashboard", path: "/dashboard" },
-        { title: "Devices", path: "/devices" },
         {
-            title: "Alarm",
+            title: "Devices",
             children: [
-                { label: "Active Alarms", path: "/alarms/active" },
-                { label: "Alarm History", path: "/alarms/history" },
+                {
+                    label: "CPU Devices", path: "/devices/cpu",
+                },
+                {
+                    label: "Memory Devices", path: "/devices/memory"
+                }
+            ]
+        },
+        {
+            title: "Alerts",
+            children: [
+                { label: "Alerts Summary", path: "/alarms/active" },
+                { label: "Critical Alerts", path: "/alarms/history" },
             ],
         },
         {
@@ -43,6 +53,7 @@ export default function PermanentDrawerLeft({ children }) {
                 { label: "Logs", path: "/events/logs" },
             ],
         },
+        { title: "Metrics", path: "/metrics" },
         { title: "Performance", path: "/performance" },
         { title: "Topology", path: "/topology" },
         { title: "Reports", path: "/reports" },
@@ -79,7 +90,7 @@ export default function PermanentDrawerLeft({ children }) {
                 }}
             >
                 <Toolbar />
-               
+
                 <Divider />
 
                 <List>

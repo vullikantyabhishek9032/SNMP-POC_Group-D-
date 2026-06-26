@@ -13,6 +13,8 @@ import Eventlogs from "./Components/Eventlogs";
 import Performacelist from "./Components/Performace";
 import Topologylist from "./Components/Topology";
 import Reportlist from "./Components/Report";
+import Memorylist from "./Components/Devices/MemoryDevices";
+import MetricsList from "./Components/Metrics";
 
 const Settings = () => <h2>Settings Page</h2>
 
@@ -22,7 +24,9 @@ function App() {
       <PermanentDrawerLeft>
         <Routes>
           <Route path="/dashboard" element={<SelectActionCard />} />
-          <Route path="/devices" element={<Devicelist />} />
+          <Route path="/devices/cpu" element={<Devicelist />} />
+          <Route path="/devices/memory" element={<Memorylist />} />
+          <Route path="/metrics" element={<MetricsList />} />
           <Route path="/alarms/active" element={<Alaramlist />} />
           <Route path="/alarms/history" element={<Alramhistory />} />
           <Route path="/events/list" element={<Eventlist />} />

@@ -4,20 +4,21 @@ import { Margin } from "@mui/icons-material";
 import Searchinput from "../CommonComponents/Searchinput";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUsers } from "../Redux/userSlice";
+import { Alert } from "../Constants/alert";
 
 export default function Alaramlist() {
 
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
-            field: 'deviceName',
-            headerName: 'Device Name',
+            field: 'hostname',
+            headerName: 'Host Name',
             width: 150,
             editable: true,
         },
         {
-            field: 'alarmName',
-            headerName: 'Alarm Name',
+            field: 'alertType',
+            headerName: 'Alert Type',
             width: 150,
             editable: true,
         },
@@ -28,114 +29,80 @@ export default function Alaramlist() {
             editable: true,
         },
         {
-            field: 'status',
-            headerName: 'Status',
+            field: 'currentValue',
+            headerName: 'Current Value',
             width: 150,
             editable: true,
         },
         {
-            field: 'createdTime',
-            headerName: 'Created_AT',
+            field: 'alertTimestamp',
+            headerName: 'Alert Timestamp',
             width: 150,
             editable: true,
         },
 
     ];
 
-    const rows = [
-        {
-            id: 1, deviceName: 'Router-01', alarmName: 'Interface Down', severity: "CRITICAL", status: "ACTIVE",
-            createdTime: new Date("2026-05-27 10:30:00").toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            })
-        },
-        {
-            "id": 2,
-            "deviceName": "Switch-02",
-            "alarmName": "High CPU Usage",
-            "severity": "MAJOR",
-            "status": "ACTIVE",
-            "sourceIp": "10.10.1.2",
-            createdTime: new Date("2026-05-27 10:40:00").toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            })
-        },
-        {
-            "id": 3,
-            "deviceName": "Firewall-01",
-            "alarmName": "Link Restored",
-            "severity": "MINOR",
-            "status": "CLEARED",
-            "sourceIp": "10.10.1.3",
-            createdTime: new Date("2026-05-27 11:00:00").toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            })
-        },
-        {
-            "id": 4,
-            "deviceName": "Router-02",
-            "alarmName": "Packet Drop",
-            "severity": "MAJOR",
-            "status": "ACTIVE",
-            "sourceIp": "10.10.1.4",
-            createdTime: new Date("2026-05-27 11:15:00").toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            })
-        },
-        {
-            "id": 5,
-            "deviceName": "Router-03",
-            "alarmName": "Quick Check",
-            "severity": "MAJOR",
-            "status": "ACTIVE",
-            "sourceIp": "10.10.1.4",
-            createdTime: new Date("2026-05-28 11:15:00").toLocaleDateString("en-GB", {
-                day: "2-digit",
-                month: "short",
-                year: "numeric"
-            })
+    const [Apidata, setApiData] = useState();
+
+    const APICall = async () => {
+        try {
+            const response = await fetch(``);
+            const saveResponse = await response.json();
+            if (saveResponse) {
+                setApiData(saveResponse);
+            }
+        } catch (error) {
+            console.log(".......", error)
         }
-    ];
-
-    const [filter, setFilter] = useState(rows);
+    }
+    // useEffect(() => {
+        // APICall()
+    // },[])
+    const [filter, setFilter] = useState(Alert);
 
     const onSearch = (e) => {
-
-        const value = e.target.value;
+        const value = e.target.value.toLowerCase();
 
         if (!value) {
-            setFilter(rows);
-            return
+            setFilter(Alert);
+            return;
         }
-        const filtered = rows.filter((data) => data.deviceName.toLowerCase().includes(value.toLowerCase()))
+
+        const filtered = Alert.filter((data) =>
+        (data.hostname?.toLowerCase().includes(value) ||
+            data.alertType?.toLowerCase().includes(value))
+        );
+
         setFilter(filtered);
-    }
-
-    const dispatch = useDispatch();
-    const { users, loading, error } = useSelector((state) => state.user);
-
-    useEffect(() => {
-        dispatch(fetchUsers());
-    }, [dispatch]);
-    console.log("log the user",users);
+    };
 
     return (
         <div style={styles.container}>
             <div>
-                <Searchinput PlaceHolder={"Search by Device Name"} search={(e) => {
+                <Searchinput PlaceHolder={"Search by Host Name"} search={(e) => {
                     onSearch(e)
                 }} />
             </div>
             <div style={styles.tableContainer}>
-                <DataGridDemo columns={columns} rows={filter} />
+                <DataGridDemo
+                    columns={columns}
+                    rows={filter.map((data, index) => {
+                        return {
+                            ...data,
+                            id: index + 1,
+                            alertTimestamp: new Date(data.alertTimestamp).toLocaleDateString(
+                                "en-GB",
+                                {
+                                    day: "2-digit",
+                                    month: "short",
+                                    year: "numeric",
+                                }
+                            ),
+                        };
+                    })}
+                />
+
             </div>
 
         </div>

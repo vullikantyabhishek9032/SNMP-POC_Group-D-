@@ -1,25 +1,38 @@
-import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
+import { Box, useTheme, useMediaQuery } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
 
-export default function DataGridDemo({columns,rows}) {
+export default function DataGridDemo({ columns, rows }) {
+
+  const theme = useTheme();
+
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   return (
-    <Box sx={{ height: 400, width: '100%' }}>
+    <Box
+      sx={{
+        width: "100%",
+        height: isMobile ? 300 : 400,
+      }}
+    >
       <DataGrid
         rows={rows}
         columns={columns}
+        autoHeight={isMobile}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: 5,
+              pageSize: isMobile ? 3 : 5,
             },
           },
         }}
-        pageSizeOptions={[5]}
-        checkboxSelection
+        pageSizeOptions={[3, 5, 10]}
+        checkboxSelection={!isMobile}
         disableRowSelectionOnClick
       />
     </Box>
   );
 }
+
+
 
 

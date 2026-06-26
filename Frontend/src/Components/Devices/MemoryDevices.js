@@ -2,11 +2,11 @@ import { useState } from "react";
 import { Styles } from "../../CommonComponents/Commonstyles";
 import DataGridDemo from "../../CommonComponents/CommonTable";
 import Searchinput from "../../CommonComponents/Searchinput";
-import { CPUDevices } from "../../Constants/CPUDevices";
+import { MemoryDevicelist } from "../../Constants/MemoryDevices";
 import { Todaydemo } from "../../Endpoint/endpoint";
 
 
-export default function Devicelist() {
+export default function Memorylist() {
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -34,8 +34,8 @@ export default function Devicelist() {
             editable: true,
         },
         {
-            field: 'metricTimestamp',
-            headerName: 'Metric Timestamp',
+            field: 'diskUsage',
+            headerName: 'Disk Usage',
             width: 150,
             editable: true,
         },
@@ -46,7 +46,7 @@ export default function Devicelist() {
 
     const APICall = async () => {
         try {
-            const response = await fetch(`${Todaydemo}/api/metrics/high-cpu`);
+            const response = await fetch(`${Todaydemo}/api/metrics/high-memory`);
             const saveResponse = await response.json();
             if (saveResponse) {
                 setApiData(saveResponse);
@@ -58,17 +58,17 @@ export default function Devicelist() {
     // useEffect(() => {
     // APICall()
     // },[])
-    const [filter, setFilter] = useState(CPUDevices);
+    const [filter, setFilter] = useState(MemoryDevicelist);
 
     const onSearch = (e) => {
         const value = e.target.value.toLowerCase();
 
         if (!value) {
-            setFilter(CPUDevices);
+            setFilter(MemoryDevicelist);
             return;
         }
 
-        const filtered = CPUDevices.filter((data) =>
+        const filtered = MemoryDevicelist.filter((data) =>
         (data.hostname?.toLowerCase().includes(value) ||
             data.memoryAvailable?.toString().includes(value))
         );
