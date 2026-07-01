@@ -13,6 +13,7 @@ import com.hcl.troy.Repo.AlertRepository;
 import com.hcl.troy.Repo.MetricsRepository;
 import com.hcl.troy.Repo.SnmpTrapRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -32,8 +33,17 @@ public class MonitoringService {
 
     private final SnmpTrapRepository repository;
 
-    private static final String BASE_URL =
-            "http://localhost:8085/api/traps";
+    @Value("${snmp.url}")
+    private String snampUrl;
+
+    @Value("${producer.kafka.service}")
+    private String producerKafka;
+
+    @Value("${snmp.trap.url}")
+    private String snmpTrapUrl;
+
+    /* private static final String BASE_URL =
+             "http://localhost:8085/api/traps";*/
     public MonitoringService(RestTemplate restTemplate, MetricsRepository metricsRepository, AlertRepository alertRepository, SnmpTrapRepository repository) {
         this.restTemplate = restTemplate;
         this.metricsRepository = metricsRepository;
@@ -44,8 +54,7 @@ public class MonitoringService {
 
     public SnmpResponse getStatus(String hostname) {
 
-        String url =
-                "http://localhost:8080/api/snmp/status/" + hostname;
+        String url = snampUrl+"api/snmp/status/" + hostname;
 
         return restTemplate.getForObject(
                 url,
@@ -54,8 +63,7 @@ public class MonitoringService {
 
     public SnmpResponse getAlerts(String hostname) {
 
-        String url =
-                "http://localhost:8080/api/snmp/alerts/" + hostname;
+        String url = snampUrl+"api/snmp/alerts/" + hostname;
 
         return restTemplate.getForObject(
                 url,
@@ -64,7 +72,7 @@ public class MonitoringService {
 
     public List<SnmpResponse> getBulkMetrics(List<String> hostnames) {
 
-        String url = "http://localhost:8080/api/snmp/metrics/bulk";
+        String url = snampUrl+"/api/snmp/metrics/bulk";
 
         HttpEntity<List<String>> request = new HttpEntity<>(hostnames);
 
@@ -82,13 +90,13 @@ public class MonitoringService {
     public SnmpResponse fetchFromSnmp(String hostname) {
 
         return restTemplate.getForObject(
-                "http://localhost:8080/api/snmp/metrics/" + hostname,
+                snampUrl+"api/snmp/metrics/" + hostname,
                 SnmpResponse.class);
     }
 
-    public void fetchAndStoreMetrics(String hostname) {
+    public SnmpResponse fetchAndStoreMetrics(String hostname) {
 
-        String url = "http://localhost:8080/api/snmp/metrics/" + hostname;
+        String url = snampUrl+"api/snmp/metrics/" + hostname;
 
         SnmpResponse response =
                 restTemplate.getForObject(
@@ -97,7 +105,7 @@ public class MonitoringService {
 
         if(response == null || response.getMetrics() == null){
             log.error("No response from SNMP service");
-            return;
+            return response;
         }
 
         saveMetrics(response.getMetrics());
@@ -108,6 +116,7 @@ public class MonitoringService {
             response.getAlerts()
                     .forEach(this::saveAlert);
         }
+        return response;
     }
 
     private void saveMetrics(SystemMetrics metrics) {
@@ -151,7 +160,7 @@ public class MonitoringService {
     private void publishMetrics(SystemMetrics event) {
 
         restTemplate.postForObject(
-                "http://localhost:8081/events/metrics",
+                producerKafka+"events/metrics",
                 event,
                 String.class);
     }
@@ -159,7 +168,7 @@ public class MonitoringService {
     private void publishAlert(SnmpAlert event) {
 
         restTemplate.postForObject(
-                "http://localhost:8081/events/publish/alerts",
+                producerKafka+"events/publish/alerts",
                 event,
                 String.class);
     }
@@ -167,21 +176,21 @@ public class MonitoringService {
     public void publishTraps(SnmpTrapDTO event) {
 
         restTemplate.postForObject(
-                "http://localhost:8081/events/publish/snmptraps",
+                producerKafka+"events/publish/snmptraps",
                 event,
                 String.class);
     }
 
     public  void publishVarbind(TrapVarbindDTO varbind){
         restTemplate.postForObject(
-                "http://localhost:8081/events/publish/trapvarbind",
+                producerKafka+"events/publish/trapvarbind",
                 varbind,
                 String.class);
     }
     public void processTraps() {
         SnmpTrapDTO[] traps =
                 restTemplate.getForObject(
-                        BASE_URL,
+                        snmpTrapUrl,
                         SnmpTrapDTO[].class);
 
 
@@ -233,7 +242,7 @@ public class MonitoringService {
 
         SnmpTrapDTO[] traps =
                 restTemplate.getForObject(
-                        BASE_URL,
+                        snmpTrapUrl,
                         SnmpTrapDTO[].class);
 
         saveTraps(traps);
@@ -243,7 +252,7 @@ public class MonitoringService {
 
         SnmpTrapDTO[] traps =
                 restTemplate.getForObject(
-                        BASE_URL + "/recent?limit=" + limit,
+                        snmpTrapUrl + "/recent?limit=" + limit,
                         SnmpTrapDTO[].class);
 
         saveTraps(traps);
@@ -253,27 +262,28 @@ public class MonitoringService {
 
         SnmpTrapDTO[] traps =
                 restTemplate.getForObject(
-                        BASE_URL + "/host/" + host,
+                        snmpTrapUrl + "/host/" + host,
                         SnmpTrapDTO[].class);
 
         saveTraps(traps);
     }
 
-    public void syncSeverityTraps(String severity) {
+    public SnmpTrapDTO[] syncSeverityTraps(String severity) {
 
         SnmpTrapDTO[] traps =
                 restTemplate.getForObject(
-                        BASE_URL + "/severity/" + severity,
+                        snmpTrapUrl + "/severity/" + severity,
                         SnmpTrapDTO[].class);
 
         saveTraps(traps);
+        return traps;
     }
 
     public void syncTrapById(Long trapId) {
 
         SnmpTrapDTO dto =
                 restTemplate.getForObject(
-                        BASE_URL + "/" + trapId,
+                        snmpTrapUrl + "/" + trapId,
                         SnmpTrapDTO.class);
 
         if(dto == null) {

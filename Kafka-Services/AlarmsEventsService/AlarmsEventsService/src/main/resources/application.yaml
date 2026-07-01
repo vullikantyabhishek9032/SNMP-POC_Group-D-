@@ -14,5 +14,17 @@ spring:
       hibernate:
         format_sql: true
 
+
+
+snmp:
+  url: "http://localhost:8080/"
+  trap:
+    url: "http://localhost:8085/api/traps"
+
+producer:
+  kafka:
+    service: "http://localhost:8081/"
+
+
 server:
   port: 8084
