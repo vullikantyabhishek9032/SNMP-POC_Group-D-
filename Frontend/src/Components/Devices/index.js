@@ -85,7 +85,22 @@ export default function Devicelist() {
                     }} />
                 </div>
                 <div style={Styles.tableContainer}>
-                    <DataGridDemo columns={columns} rows={filter} />
+                    <DataGridDemo columns={columns}
+                        rows={filter.map((data, index) => {
+                            return {
+                                ...data,
+                                id: index + 1,
+                                metricTimestamp: new Date(data.metricTimestamp).toLocaleDateString(
+                                    "en-GB",
+                                    {
+                                        day: "2-digit",
+                                        month: "short",
+                                        year: "numeric",
+                                    }
+                                ),
+                            };
+                        })}
+                    />
                 </div>
 
             </div>
