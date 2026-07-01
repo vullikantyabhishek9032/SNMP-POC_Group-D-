@@ -1,7 +1,9 @@
 package com.hcl.troy.Controller;
 
 import com.hcl.troy.DTO.SnmpResponse;
+import com.hcl.troy.DTO.SnmpTrapDTO;
 import com.hcl.troy.Service.MonitoringService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/monitoring")
-//@RequiredArgsConstructor
 public class MonitoringController {
 
     private final MonitoringService service;
@@ -52,12 +53,9 @@ public class MonitoringController {
     }
 
     @GetMapping("/traps/severity/{severity}")
-    public String syncSeverityTraps(
+    public ResponseEntity<SnmpTrapDTO[]> syncSeverityTraps(
             @PathVariable String severity) {
-
-        service.syncSeverityTraps(severity);
-
-        return "Severity Traps Synced";
+        return ResponseEntity.ok(service.syncSeverityTraps(severity));
     }
 
     @GetMapping("/traps/{trapId}")
@@ -70,19 +68,19 @@ public class MonitoringController {
     }
 
     @GetMapping("/collect/{hostname}")
-    public String collectMetrics(
+    public ResponseEntity<SnmpResponse> collectMetrics(
             @PathVariable String hostname) {
 
-        service.fetchAndStoreMetrics(hostname);
+        SnmpResponse response=service.fetchAndStoreMetrics(hostname);
         service.processMetrics(service.fetchFromSnmp(hostname));
 
-        return "Metrics Saved Successfully";
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/status/{hostname}")
     public SnmpResponse getStatus(
             @PathVariable String hostname) {
-
+        System.out.println(hostname);
         return service.getStatus(hostname);
     }
 
