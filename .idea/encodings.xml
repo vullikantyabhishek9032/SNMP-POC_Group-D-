@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/Alert-read-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Kafka-Services/AlarmsEventsService/AlarmsEventsService/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Kafka-Services/Consumer-Kafka-Service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Kafka-Services/Producer-kafka-service/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SNMPServices/SnmpMicroservice-1/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/SNMPTrapMicroservice/src/main/java" charset="UTF-8" />
+  </component>
+</project>
