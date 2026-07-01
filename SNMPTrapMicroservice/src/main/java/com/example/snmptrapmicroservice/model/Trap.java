@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "trap")
+@Table(name = "snmp_traps")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

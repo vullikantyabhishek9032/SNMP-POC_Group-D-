@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "varbind")
+@Table(name = "trap_varbinds")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

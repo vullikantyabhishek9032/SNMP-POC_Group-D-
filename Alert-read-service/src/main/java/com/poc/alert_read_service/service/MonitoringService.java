@@ -43,18 +43,17 @@ public class MonitoringService {
         return trapRepository.findBySeverity(severity);
     }
 
-    public Trap getTrapById(String trapId) {
+    public Trap getTrapById(Long trapId) {
         return trapRepository.findById(trapId).orElse(null);
     }
-
-    public Metrics collectMetricsByHostname(String hostname) {
-        return metricsRepository.findByHostname(hostname).orElse(null);
+    public List<Metrics> collectMetricsByHostname(String hostname) {
+        return metricsRepository.findByHostname(hostname);
     }
 
     public String getDeviceStatus(String hostname) {
-        Metrics metrics = metricsRepository.findByHostname(hostname).orElse(null);
+        List<Metrics> metricsList = metricsRepository.findByHostname(hostname);
 
-        if (metrics == null) {
+        if (metricsList == null || metricsList.isEmpty()) {
             return "UNKNOWN";
         }
 

@@ -22,7 +22,7 @@ public class MetricsController {
     }
 
     @GetMapping("/{hostname}")
-    public Metrics getMetricsByHostname(
+    public List<Metrics> getMetricsByHostname(
             @PathVariable String hostname) {
 
         return metricsService.getMetricsByHostname(hostname);

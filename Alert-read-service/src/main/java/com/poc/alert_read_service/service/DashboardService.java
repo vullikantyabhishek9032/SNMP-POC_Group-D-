@@ -1,5 +1,5 @@
 package com.poc.alert_read_service.service;
-
+import java.math.BigDecimal;
 import com.poc.alert_read_service.dto.DashboardSummary;
 import com.poc.alert_read_service.repository.AlertRepository;
 import com.poc.alert_read_service.repository.MetricsRepository;
@@ -27,11 +27,11 @@ public class DashboardService {
         );
 
         summary.setHighCpuDevices(
-                metricsRepository.findByCpuUsageGreaterThan(80.0).size()
+                metricsRepository.findByCpuUsageGreaterThan(BigDecimal.valueOf(80.0)).size()
         );
 
         summary.setHighMemoryDevices(
-                metricsRepository.findByMemoryUsageGreaterThan(80.0).size()
+                metricsRepository.findByMemoryUsageGreaterThan(BigDecimal.valueOf(80.0)).size()
         );
 
         return summary;

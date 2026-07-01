@@ -29,7 +29,9 @@ public class SnmpService {
     
     @SuppressWarnings({ "rawtypes", "unchecked" })
 	public SystemMetrics querySnmpMetrics(String hostname) {
+
         SystemMetrics metrics = new SystemMetrics();
+
         metrics.setHostname(hostname);
         metrics.setTimestamp(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
         
