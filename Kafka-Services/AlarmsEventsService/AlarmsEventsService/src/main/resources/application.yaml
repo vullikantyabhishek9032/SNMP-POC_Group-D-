@@ -4,7 +4,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/monitoring_db
     username: postgres
-    password: Srinivasarao26@
+    password: postgres
 
   jpa:
     hibernate:
