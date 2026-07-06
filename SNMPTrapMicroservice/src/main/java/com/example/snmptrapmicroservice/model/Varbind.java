@@ -16,9 +16,12 @@ public class Varbind {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long varbindId;
     
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "trap_id", nullable = false)
-    private Trap trap;
+   // @ManyToOne(fetch = FetchType.LAZY)
+   // @JoinColumn(name = "trap_id", nullable = false)
+   // private Trap trap;
+   @ManyToOne
+   @JoinColumn(name = "trap_id")
+   private Trap trap;
     
     @Column(name = "oid", nullable = false, length = 1024)
     private String oid;

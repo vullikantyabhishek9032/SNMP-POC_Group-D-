@@ -79,6 +79,7 @@ public class SnmpTrapListenerService {
         @SuppressWarnings("rawtypes")
 		@Override
         public void processPdu(CommandResponderEvent event) {
+            System.out.println("************TRAP RECEIVED");
             try {
                 PDU pdu = event.getPDU();
                 if (pdu == null) return;

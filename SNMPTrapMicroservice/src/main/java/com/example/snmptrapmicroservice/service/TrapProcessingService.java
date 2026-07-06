@@ -28,7 +28,7 @@ public class TrapProcessingService {
     @Transactional
     public Trap processTrap(String host, String community, int pduType, 
                            String trapOid, Vector<VariableBinding> bindings, String version) {
-        
+        System.out.println("ENTERED processTrap()");
         Trap trap = new Trap();
         trap.setHost(host);
         trap.setCommunity(community);
@@ -57,10 +57,12 @@ public class TrapProcessingService {
         }
         
         // Save to MySQL database
+        System.out.println(" Before saving trap");
+
         Trap savedTrap = trapRepository.save(trap);
         log.info("Trap saved to database: ID={}, Host={}, Severity={}", 
             savedTrap.getTrapId(), host, savedTrap.getSeverity());
-        
+        System.out.println("After saving trap: " + savedTrap.getTrapId());
         return savedTrap;
     }
     
