@@ -16,8 +16,8 @@ public class EmailService {
 
         SimpleMailMessage message = new SimpleMailMessage();
 
-        message.setTo("mail");
-        message.setFrom("mail");
+        message.setTo("sirasanisivakrishna26@gmail.com");
+        message.setFrom("sirasanisivakrishna26@gmail.com");
         message.setSubject(
                 "Plan Recommendation");
 

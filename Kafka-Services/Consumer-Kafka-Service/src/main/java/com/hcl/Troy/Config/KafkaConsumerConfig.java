@@ -1,6 +1,7 @@
 package com.hcl.Troy.Config;
 
 import com.hcl.Troy.DTO.AlarmEvent;
+import com.hcl.Troy.DTO.RecommendationDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
@@ -17,7 +18,6 @@ import java.util.Map;
 @Configuration
 @EnableKafka
 public class KafkaConsumerConfig {
-
     @Bean
     public ConsumerFactory<String, AlarmEvent> consumerFactory() {
 
@@ -58,4 +58,87 @@ public class KafkaConsumerConfig {
 
         return factory;
     }
+     @Bean
+    public ConsumerFactory<String, RecommendationDTO> consumerFactoryRecommendation() {
+
+        JsonDeserializer<RecommendationDTO> deserializer =
+                new JsonDeserializer<>(RecommendationDTO.class);
+
+        deserializer.addTrustedPackages("*");
+        deserializer.ignoreTypeHeaders();
+        Map<String, Object> props = new HashMap<>();
+
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9092");
+
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                "metrics-group");
+
+        return new DefaultKafkaConsumerFactory<>(
+                props,
+                new StringDeserializer(),
+                deserializer
+        );
+    }
+
+
+    @Bean(name = "kafkaListenerContainerRecommendationFactory")
+    public ConcurrentKafkaListenerContainerFactory<String, RecommendationDTO>
+    kafkaListenerContainerFactory1() {
+
+        ConcurrentKafkaListenerContainerFactory<String, RecommendationDTO>
+                factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+
+        factory.setConsumerFactory(consumerFactoryRecommendation());
+
+        return factory;
+    }
 }
+/*
+
+@Configuration
+@EnableKafka
+public class KafkaConsumerConfig {
+
+    @Bean
+    public ConsumerFactory<String, RecommendationDTO> consumerFactory() {
+
+        JsonDeserializer<RecommendationDTO> deserializer =
+                new JsonDeserializer<>(RecommendationDTO.class);
+
+        deserializer.addTrustedPackages("*");
+        deserializer.ignoreTypeHeaders();
+        Map<String, Object> props = new HashMap<>();
+
+        props.put(
+                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                "localhost:9092");
+
+        props.put(
+                ConsumerConfig.GROUP_ID_CONFIG,
+                "metrics-group");
+
+        return new DefaultKafkaConsumerFactory<>(
+                props,
+                new StringDeserializer(),
+                deserializer
+        );
+    }
+
+
+    @Bean(name = "kafkaListenerContainerFactory")
+    public ConcurrentKafkaListenerContainerFactory<String, RecommendationDTO>
+    kafkaListenerContainerFactory() {
+
+        ConcurrentKafkaListenerContainerFactory<String, RecommendationDTO>
+                factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+
+        factory.setConsumerFactory(consumerFactory());
+
+        return factory;
+    }
+}*/

@@ -26,3 +26,12 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+
+        producer:
+          properties:
+            spring:
+              json:
+                add:
+                  type:
+                    headers: false

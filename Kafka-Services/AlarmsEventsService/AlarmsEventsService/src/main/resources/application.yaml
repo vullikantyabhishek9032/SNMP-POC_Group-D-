@@ -23,7 +23,7 @@ snmp:
 
 producer:
   kafka:
-    service: "http://localhost:8081/"
+    service: "http://localhost:8083/"
 
 
 server:

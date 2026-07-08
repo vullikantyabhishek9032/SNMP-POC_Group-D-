@@ -1,12 +1,10 @@
 package com.hcl.Troy.Service;
 
-import com.hcl.Troy.DTO.AlarmEvent;
-import com.hcl.Troy.DTO.AlertEvent;
-import com.hcl.Troy.DTO.MonitoringEvent;
-import com.hcl.Troy.DTO.SnmpTrapDTO;
-import com.hcl.Troy.DTO.TrapVarbindDTO;
+import com.hcl.Troy.DTO.*;
+import jakarta.annotation.PostConstruct;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ public class AlarmConsumerService {
     private final List<TrapVarbindDTO> consumedTrapVarbinds =
             new ArrayList<>();
 
-
+    private final List<RecommendationDTO> recommendations = new ArrayList<>();
     @KafkaListener(
             topics = "metrics-topic",
             groupId = "metrics-group"
@@ -72,4 +70,30 @@ public class AlarmConsumerService {
 
         return consumedAlertEvents;
     }
+
+
+    @KafkaListener(
+            topics = "recommendation-topic",
+            groupId = "recommendation-group-v21",
+            containerFactory = "kafkaListenerContainerRecommendationFactory")
+    public void consume(RecommendationDTO dto) {
+
+        recommendations.add(dto);
+
+        System.out.println("SIZE = " + recommendations.size());
+
+        System.out.println(dto);
+    }
+
+
+    public List<RecommendationDTO> getRecommendations(){
+        return recommendations;
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("LIST SIZE AT STARTUP = "
+                + recommendations.size());
+    }
+
 }
