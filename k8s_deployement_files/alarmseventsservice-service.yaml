@@ -10,4 +10,4 @@ spec:
     - protocol: TCP
       port: 8084        # service port
       targetPort: 8084  # container port
-      nodePort: 31184   # external port (you can change if needed)
+      nodePort: 30094   # external port (you can change if needed)

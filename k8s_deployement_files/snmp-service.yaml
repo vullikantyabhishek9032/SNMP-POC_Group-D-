@@ -13,7 +13,7 @@ spec:
       protocol: TCP
       port: 8080        # Service port
       targetPort: 8080  # Container port
-      nodePort: 30082   # External access port
+      nodePort: 30092   # External access port
 
     - name: snmp
       protocol: UDP

@@ -10,4 +10,4 @@ spec:
     - protocol: TCP
       port: 8081        # service port
       targetPort: 8081  # container port
-      nodePort: 32283   # external access port
+      nodePort: 30091   # external access port
