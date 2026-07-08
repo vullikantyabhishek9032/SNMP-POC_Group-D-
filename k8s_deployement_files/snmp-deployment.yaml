@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snmp-microservice
+  labels:
+    app: snmp-microservice
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: snmp-microservice
+
+  template:
+    metadata:
+      labels:
+        app: snmp-microservice
+
+    spec:
+      containers:
+        - name: snmp-microservice
+          image: localhost/snmp-microservice:1.4
+          imagePullPolicy: Never
+
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+            - containerPort: 8161
+              protocol: UDP

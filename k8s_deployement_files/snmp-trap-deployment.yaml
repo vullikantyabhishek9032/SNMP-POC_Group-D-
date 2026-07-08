@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: snmp-trap-service
+  labels:
+    app: snmp-trap-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: snmp-trap-service
+  template:
+    metadata:
+      labels:
+        app: snmp-trap-service
+    spec:
+      containers:
+        - name: trapservice-container
+          image: snmp-trap-service:1.0
+          imagePullPolicy: Never   # local image
+          ports:
+            - containerPort: 8085
+          env:
+            - name: SERVER_PORT
+              value: "8085"

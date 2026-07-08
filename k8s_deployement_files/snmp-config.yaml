@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: snmp-config
+
+data:
+  snmp.allowed-hosts: server1,router1,switch

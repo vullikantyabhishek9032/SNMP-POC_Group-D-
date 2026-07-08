@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: consumer-kafka-service
+  labels:
+    app: consumer-kafka-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: consumer-kafka-service
+  template:
+    metadata:
+      labels:
+        app: consumer-kafka-service
+    spec:
+      containers:
+        - name: consumer-kafka-service
+          image: localhost/consumer-kafka-service:1.0
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8086
+          env:
+            - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
+              value: kafka-service:9092
+            - name: SPRING_KAFKA_CONSUMER_GROUP_ID
+              value: group_id
+            - name: SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET
+              value: earliest
