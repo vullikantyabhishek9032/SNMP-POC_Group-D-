@@ -1,13 +1,12 @@
 package com.hcl.Troy.Service;
 
 import com.fasterxml.jackson.databind.Module;
-import com.hcl.Troy.DTO.AlarmEvent;
-import com.hcl.Troy.DTO.AlertEvent;
-import com.hcl.Troy.DTO.MonitoringEvent;
-import com.hcl.Troy.DTO.SnmpTrapDTO;
-import com.hcl.Troy.DTO.TrapVarbindDTO;
+import com.hcl.Troy.DTO.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Service
 public class AlarmProducerService {
@@ -20,13 +19,16 @@ public class AlarmProducerService {
 
     private final KafkaTemplate<String, TrapVarbindDTO> kafkaVarbindTrapTemplate;
 
+    private final  KafkaTemplate<String, CustomerUsage> kafkaTemplate;
+
     public AlarmProducerService(
-            KafkaTemplate<String, MonitoringEvent> metricsKafkaTemplate, KafkaTemplate<String, AlertEvent> alertKafkaTemplate, KafkaTemplate<String, SnmpTrapDTO> kafkaTrapTemplate, KafkaTemplate<String, TrapVarbindDTO> kafkaVarbindTrapTemplate) {
+            KafkaTemplate<String, MonitoringEvent> metricsKafkaTemplate, KafkaTemplate<String, AlertEvent> alertKafkaTemplate, KafkaTemplate<String, SnmpTrapDTO> kafkaTrapTemplate, KafkaTemplate<String, TrapVarbindDTO> kafkaVarbindTrapTemplate, @Qualifier("kafkaCustomerTemplate") KafkaTemplate<String, CustomerUsage> kafkaTemplate) {
 
         this.metricsKafkaTemplate = metricsKafkaTemplate;
         this.alertKafkaTemplate = alertKafkaTemplate;
         this.kafkaTrapTemplate = kafkaTrapTemplate;
         this.kafkaVarbindTrapTemplate = kafkaVarbindTrapTemplate;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
 
@@ -64,7 +66,11 @@ public class AlarmProducerService {
                 dto);
     }
 
+    public String sendUsage(@RequestBody CustomerUsage payload) {
+        kafkaTemplate.send("usage-topic", payload);
 
+        return "Message sent to usage-topic";
+    }
 
 
 }

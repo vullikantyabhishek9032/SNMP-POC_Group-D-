@@ -7,11 +7,9 @@ spring:
     consumer:
       group-id: metrics-group
       auto-offset-reset: earliest
-      #value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
 
       key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
-
 
       properties:
         spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
@@ -19,10 +17,9 @@ spring:
 
         spring.json.trusted.packages: "*"
 
-
-
+        # IMPORTANT
+        spring.json.use.type.headers: false
+        spring.json.value.default.type: com.hcl.Troy.DTO.RecommendationDTO
 
 server:
   port: 8086
-
-

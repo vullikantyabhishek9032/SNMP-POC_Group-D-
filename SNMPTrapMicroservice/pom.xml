@@ -45,12 +45,15 @@
 			<artifactId>spring-boot-starter-webmvc</artifactId>
 		</dependency>
 
-		<dependency>
+		<!--<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
-		</dependency>
-
+		</dependency>-->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+        </dependency>
 		<!-- SNMP4J for Trap Receiver  -->
 		<dependency>
 			<groupId>org.snmp4j</groupId>
@@ -81,11 +84,11 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>com.example</groupId>
 			<artifactId>snmp-microservice</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
+		</dependency>-->
 	</dependencies>
 
 	<build>

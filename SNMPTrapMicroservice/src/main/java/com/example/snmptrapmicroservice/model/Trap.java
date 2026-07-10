@@ -63,9 +63,13 @@ public class Trap {
     @Column(name = "processed")
     private Boolean processed = false;
     
-    @OneToMany(mappedBy = "trap", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Varbind> varbinds = new ArrayList<>();
-    
+  //  @OneToMany(mappedBy = "trap", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  //  private List<Varbind> varbinds = new ArrayList<>();
+  @OneToMany(mappedBy = "trap", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Varbind> varbinds = new ArrayList<>();
+
+
+
     @PrePersist
     protected void onCreate() {
         timestamp = LocalDateTime.now();

@@ -1,8 +1,6 @@
 package com.hcl.Troy.Controller;
 
-import com.hcl.Troy.DTO.AlarmEvent;
-import com.hcl.Troy.DTO.AlertEvent;
-import com.hcl.Troy.DTO.MonitoringEvent;
+import com.hcl.Troy.DTO.*;
 import com.hcl.Troy.Service.AlarmConsumerService;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +29,14 @@ public class ConsumerController {
 
         return consumerService.getAllAlertEvents();
     }
+
+
+    @GetMapping("/recommendations")
+    public List<RecommendationDTO> getRecommendations() {
+
+        return consumerService.getRecommendations();
+    }
+
 
 
 
