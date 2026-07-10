@@ -1,7 +1,20 @@
-import DataGridDemo from "../CommonComponents/CommonTable";
-import Searchinput from "../CommonComponents/Searchinput";
+// export default function EventlistView(){
+//     return (
+//         <>
+//         <h2>
+//             ..............................
+//         </h2>
+//         </>
+//     )
+// }
 
-export default function Eventlist() {
+import { useEffect, useState } from "react";
+import { Styles } from "../../CommonComponents/Commonstyles";
+import DataGridDemo from "../../CommonComponents/CommonTable";
+import Searchinput from "../../CommonComponents/Searchinput";
+import { eventsUrl } from "../../Endpoint/endpoint";
+
+export default function EventlistView() {
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
         {
@@ -38,14 +51,32 @@ export default function Eventlist() {
     ];
     const rows = [];
 
+    const [data, setData] = useState();
+
+    const response = async () => {
+        try {
+            const Api = await fetch(`${eventsUrl}/consumer`);
+            const ResponseData = await Api.json();
+            if (ResponseData) {
+                setData(ResponseData)
+            }
+        } catch (error) {
+            console.log("log it....", error);
+        }
+    }
+
+    useEffect(() => {
+        response()
+    }, [])
+
     return (
         <>
-            <div style={styles.container}>
+            <div style={Styles.container}>
                 <div>
                     <Searchinput PlaceHolder={"Search by Event Name"} />
                 </div>
-                <div style={styles.tableContainer}>
-                    <DataGridDemo columns={columns} rows={rows} />
+                <div style={Styles.tableContainer}>
+                    <DataGridDemo columns={columns} rows={data} />
                 </div>
             </div>
         </>

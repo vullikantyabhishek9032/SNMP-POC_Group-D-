@@ -2,18 +2,20 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import PermanentDrawerLeft from "./Drawer";
 import Alaramlist from "./Components/alarmlist";
-import Eventlist from "./Components/Eventlist";
 import SelectActionCard from "./Components/Dashboard";
-import Devicelist from "./Components/Devices";
-import Alramhistory from "./Components/Alaramhistory";
-import Eventlogs from "./Components/Eventlogs";
 import Performacelist from "./Components/Performace";
-import Topologylist from "./Components/Topology";
 import Reportlist from "./Components/Report";
-import Memorylist from "./Components/Devices/MemoryDevices";
 import MetricsList from "./Components/Metrics";
 import Login from "./Components/Login";
 import ProtectedRoute from "./Components/Protectedroute";
+import Adddevice from "./Components/Metrics/Adddevicescreen";
+import GetAlarmbyId from "./Components/alarmgetbyId";
+import UserDetails from "./Userdetails/userIndex";
+import Roles from "./Components/Topology";
+import Planlist from "./Components/Report";
+import AddUser from "./Userdetails/adduserdetails";
+import Viewuserdetails from "./Userdetails/vieworedituserdetails";
+import EventlistView from "./Components/Events/eventlistview";
 
 const Settings = () => <h2>Settings Page</h2>
 
@@ -22,24 +24,24 @@ function LayoutModel() {
     <PermanentDrawerLeft>
       <Routes>
         <Route path="/dashboard" element={<SelectActionCard />} />
-        <Route path="/devices/cpu" element={<Devicelist />} />
-        <Route path="/devices/memory" element={<Memorylist />} />
         <Route path="/metrics" element={<MetricsList />} />
-        <Route path="/alarms/active" element={<Alaramlist />} />
-        <Route path="/alarms/history" element={<Alramhistory />} />
-        <Route path="/events/list" element={<Eventlist />} />
-        <Route path="/events/logs" element={<Eventlogs />} />
+        <Route path="/adddevices" element={<Adddevice />} />
+        <Route path="/alerts" element={<Alaramlist />} />
+        <Route path="/alerts/:id" element={<GetAlarmbyId />} />
+        <Route path="/events" element={<EventlistView />} />
         <Route path="/performance" element={<Performacelist />} />
-        <Route path="/topology" element={<Topologylist />} />
-        <Route path="/reports" element={<Reportlist />} />
+        <Route path="/roles" element={<Roles />} />
+        <Route path="/avaviableplans" element={<Planlist />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/user" element={<UserDetails />} />
+        <Route path="/addUser" element={<AddUser />} />
+        <Route path="/Viewdetails" element={<Viewuserdetails />} />
       </Routes>
     </PermanentDrawerLeft>
   )
 }
 
 function App() {
-
 
   return (
     <BrowserRouter>

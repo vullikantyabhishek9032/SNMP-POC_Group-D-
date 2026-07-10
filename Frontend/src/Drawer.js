@@ -28,35 +28,13 @@ export default function PermanentDrawerLeft({ children }) {
 
     const menu = [
         { title: "Dashboard", path: "/dashboard" },
-        {
-            title: "Devices",
-            children: [
-                {
-                    label: "CPU Devices", path: "/devices/cpu",
-                },
-                {
-                    label: "Memory Devices", path: "/devices/memory"
-                }
-            ]
-        },
-        {
-            title: "Alerts",
-            children: [
-                { label: "Alerts Summary", path: "/alarms/active" },
-                { label: "Critical Alerts", path: "/alarms/history" },
-            ],
-        },
-        {
-            title: "Events",
-            children: [
-                { label: "Event List", path: "/events/list" },
-                { label: "Logs", path: "/events/logs" },
-            ],
-        },
-        { title: "Metrics", path: "/metrics" },
+        { title: "Metric Devices", path: "/metrics" },
+        { title: "Alerts", path: "/alerts" },
+        { title: "Events", path: "/events" },
+        { title: "User Details", path: "/user" },
         { title: "Performance", path: "/performance" },
-        { title: "Topology", path: "/topology" },
-        { title: "Reports", path: "/reports" },
+        { title: "Roles", path: "/roles" },
+        { title: "Plan Manager", path: "/avaviableplans" },
         { title: "Settings", path: "/settings" },
     ];
 

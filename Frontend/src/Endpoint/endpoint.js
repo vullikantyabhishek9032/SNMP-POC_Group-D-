@@ -49,7 +49,9 @@ export const EventURL = `${baseurl}/api/alerts/hostname/server1`;
 export const AlertURL = `${baseurl}/users`;
 
 
- export const Todaydemo = `http://localhost:8080`
+ export const Todaydemo = `http://192.168.77.133:8089`
+
+ export const eventsUrl = `http://localhost:8086`
 
 
 
