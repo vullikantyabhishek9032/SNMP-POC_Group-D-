@@ -47,7 +47,6 @@ export default function EventlistView() {
             width: 150,
             editable: true,
         },
-
         {
             field: 'timestamp',
             headerName: 'DateAndTime',
@@ -62,6 +61,7 @@ export default function EventlistView() {
     const response = async () => {
         try {
             const Api = await fetch(`${eventsUrl}/consumer/recommendations`);
+
             const ResponseData = await Api.json();
             if (ResponseData) {
                 setData(ResponseData)
@@ -96,6 +96,7 @@ export default function EventlistView() {
                             : "",
                     }))}
   />
+                    <DataGridDemo columns={columns} rows={data} />
                 </div>
             </div>
         </>
