@@ -9,17 +9,15 @@ import com.hcl.troy.Entity.AlertEntity;
 import com.hcl.troy.Entity.MetricsEntity;
 import com.hcl.troy.Entity.SnmpTrapEntity;
 import com.hcl.troy.Entity.TrapVarbindEntity;
+import com.hcl.troy.FeignClient.ProducerServiceCall;
+import com.hcl.troy.FeignClient.SnmpServiceCall;
+import com.hcl.troy.FeignClient.SnmpTrapServiceCall;
 import com.hcl.troy.Repo.AlertRepository;
 import com.hcl.troy.Repo.MetricsRepository;
 import com.hcl.troy.Repo.SnmpTrapRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -27,82 +25,47 @@ import java.util.List;
 @Slf4j
 public class MonitoringService {
 
-    private final RestTemplate restTemplate;
     private final MetricsRepository metricsRepository;
     private final AlertRepository alertRepository;
 
     private final SnmpTrapRepository repository;
 
-    @Value("${snmp.url}")
-    private String snampUrl;
+    private final SnmpServiceCall snmpServiceCall;
 
-    @Value("${producer.kafka.service}")
-    private String producerKafka;
+    private final SnmpTrapServiceCall snmpTrapServiceCall;
 
-    @Value("${snmp.trap.url}")
-    private String snmpTrapUrl;
+    private final ProducerServiceCall producerServiceCall;
 
-    /* private static final String BASE_URL =
-             "http://localhost:8085/api/traps";*/
-    public MonitoringService(RestTemplate restTemplate, MetricsRepository metricsRepository, AlertRepository alertRepository, SnmpTrapRepository repository) {
-        this.restTemplate = restTemplate;
+    public MonitoringService(MetricsRepository metricsRepository, AlertRepository alertRepository, SnmpTrapRepository repository,SnmpServiceCall snmpServiceCall,SnmpTrapServiceCall snmpTrapServiceCall,ProducerServiceCall producerServiceCall) {
         this.metricsRepository = metricsRepository;
         this.alertRepository = alertRepository;
         this.repository = repository;
+        this.snmpServiceCall=snmpServiceCall;
+        this.snmpTrapServiceCall=snmpTrapServiceCall;
+        this.producerServiceCall=producerServiceCall;
     }
 
 
     public SnmpResponse getStatus(String hostname) {
-
-        String url = snampUrl+"api/snmp/status/" + hostname;
-
-        return restTemplate.getForObject(
-                url,
-                SnmpResponse.class);
+       return snmpServiceCall.getStatus(hostname);
     }
 
     public SnmpResponse getAlerts(String hostname) {
-
-        String url = snampUrl+"api/snmp/alerts/" + hostname;
-
-        return restTemplate.getForObject(
-                url,
-                SnmpResponse.class);
+        return snmpServiceCall.getAlerts(hostname);
     }
 
     public List<SnmpResponse> getBulkMetrics(List<String> hostnames) {
 
-        String url = snampUrl+"/api/snmp/metrics/bulk";
-
-        HttpEntity<List<String>> request = new HttpEntity<>(hostnames);
-
-        ResponseEntity<List<SnmpResponse>> response =
-                restTemplate.exchange(
-                        url,
-                        HttpMethod.POST,
-                        request,
-                        new ParameterizedTypeReference<List<SnmpResponse>>() {
-                        });
-
-        return response.getBody();
+        return snmpServiceCall.getBulkMetrics(hostnames);
     }
 
     public SnmpResponse fetchFromSnmp(String hostname) {
 
-        return restTemplate.getForObject(
-                snampUrl+"api/snmp/metrics/" + hostname,
-                SnmpResponse.class);
+        return snmpServiceCall.fetchFromSnmp(hostname);
     }
 
     public SnmpResponse fetchAndStoreMetrics(String hostname) {
-
-        String url = snampUrl+"api/snmp/metrics/" + hostname;
-
-        SnmpResponse response =
-                restTemplate.getForObject(
-                        url,
-                        SnmpResponse.class);
-
+        SnmpResponse response =snmpServiceCall.fetchAndStoreMetrics(hostname);
         if(response == null || response.getMetrics() == null){
             log.error("No response from SNMP service");
             return response;
@@ -110,11 +73,9 @@ public class MonitoringService {
 
         saveMetrics(response.getMetrics());
 
-        if(response.getAlerts() != null &&
-                !response.getAlerts().isEmpty()) {
+        if(response.getAlerts() != null && !response.getAlerts().isEmpty()) {
 
-            response.getAlerts()
-                    .forEach(this::saveAlert);
+            response.getAlerts().forEach(this::saveAlert);
         }
         return response;
     }
@@ -158,40 +119,23 @@ public class MonitoringService {
 
 
     private void publishMetrics(SystemMetrics event) {
-
-        restTemplate.postForObject(
-                producerKafka+"events/metrics",
-                event,
-                String.class);
+        producerServiceCall.publishMetrics(event);
     }
 
     private void publishAlert(SnmpAlert event) {
 
-        restTemplate.postForObject(
-                producerKafka+"events/publish/alerts",
-                event,
-                String.class);
+        producerServiceCall.publishAlert(event);
     }
 
     public void publishTraps(SnmpTrapDTO event) {
-
-        restTemplate.postForObject(
-                producerKafka+"events/publish/snmptraps",
-                event,
-                String.class);
+        producerServiceCall.publishTrap(event);
     }
 
     public  void publishVarbind(TrapVarbindDTO varbind){
-        restTemplate.postForObject(
-                producerKafka+"events/publish/trapvarbind",
-                varbind,
-                String.class);
+        producerServiceCall.publishVarbind(varbind);
     }
     public void processTraps() {
-        SnmpTrapDTO[] traps =
-                restTemplate.getForObject(
-                        snmpTrapUrl,
-                        SnmpTrapDTO[].class);
+        SnmpTrapDTO[] traps =snmpTrapServiceCall.processTraps();
 
 
         if (traps == null) {
@@ -217,8 +161,7 @@ public class MonitoringService {
     }
 
 
-    public void processMetrics(
-            SnmpResponse response) {
+    public void processMetrics(SnmpResponse response) {
 
         saveMetrics(response.getMetrics());
 
@@ -240,61 +183,49 @@ public class MonitoringService {
 
     public void syncAllTraps() {
 
-        SnmpTrapDTO[] traps =
-                restTemplate.getForObject(
-                        snmpTrapUrl,
-                        SnmpTrapDTO[].class);
+        SnmpTrapDTO[] traps =snmpTrapServiceCall.syncAllTraps();
 
         saveTraps(traps);
     }
 
-    public void syncRecentTraps(int limit) {
+    public SnmpTrapDTO[] syncRecentTraps(int limit) {
 
-        SnmpTrapDTO[] traps =
-                restTemplate.getForObject(
-                        snmpTrapUrl + "/recent?limit=" + limit,
-                        SnmpTrapDTO[].class);
-
-        saveTraps(traps);
-    }
-
-    public void syncHostTraps(String host) {
-
-        SnmpTrapDTO[] traps =
-                restTemplate.getForObject(
-                        snmpTrapUrl + "/host/" + host,
-                        SnmpTrapDTO[].class);
-
-        saveTraps(traps);
-    }
-
-    public SnmpTrapDTO[] syncSeverityTraps(String severity) {
-
-        SnmpTrapDTO[] traps =
-                restTemplate.getForObject(
-                        snmpTrapUrl + "/severity/" + severity,
-                        SnmpTrapDTO[].class);
+        SnmpTrapDTO[] traps =snmpTrapServiceCall.syncRecentTraps(limit);
 
         saveTraps(traps);
         return traps;
     }
 
-    public void syncTrapById(Long trapId) {
+    public SnmpTrapDTO[] syncHostTraps(String host) {
 
-        SnmpTrapDTO dto =
-                restTemplate.getForObject(
-                        snmpTrapUrl + "/" + trapId,
-                        SnmpTrapDTO.class);
+        SnmpTrapDTO[] traps = snmpTrapServiceCall.syncHostTraps(host);
+
+        saveTraps(traps);
+        return traps;
+    }
+
+    public SnmpTrapDTO[] syncSeverityTraps(String severity) {
+
+        SnmpTrapDTO[] traps =snmpTrapServiceCall.syncSeverityTraps(severity);
+
+        saveTraps(traps);
+        return traps;
+    }
+
+    public SnmpTrapDTO syncTrapById(Long trapId) {
+
+        SnmpTrapDTO dto =snmpTrapServiceCall.syncTrapById(trapId);
 
         if(dto == null) {
-            return;
+            return dto;
         }
 
         if(repository.existsById(dto.getTrapId())) {
-            return;
+            return dto;
         }
 
         repository.save(convertToEntity(dto));
+        return dto;
     }
 
     private void saveTraps(SnmpTrapDTO[] traps) {
@@ -321,11 +252,7 @@ public class MonitoringService {
 
         log.info("===== Starting Trap Sync =====");
 
-        ResponseEntity<SnmpTrapDTO[]> response =
-                restTemplate.getForEntity(
-                        "http://localhost:8085/api/traps",
-                        SnmpTrapDTO[].class);
-
+        ResponseEntity<SnmpTrapDTO[]> response =snmpTrapServiceCall.syncTraps();
         SnmpTrapDTO[] traps = response.getBody();
 
         if (traps == null) {
@@ -350,11 +277,9 @@ public class MonitoringService {
         }
     }
 
-    private SnmpTrapEntity convertToEntity(
-            SnmpTrapDTO dto) {
+    private SnmpTrapEntity convertToEntity(SnmpTrapDTO dto) {
 
-        SnmpTrapEntity trap =
-                new SnmpTrapEntity();
+        SnmpTrapEntity trap = new SnmpTrapEntity();
 
         trap.setTrapId(dto.getTrapId());
         trap.setTimestamp(dto.getTimestamp());
@@ -373,9 +298,7 @@ public class MonitoringService {
                     dto.getVarbinds()
                             .stream()
                             .map(v -> {
-
-                                TrapVarbindEntity entity =
-                                        new TrapVarbindEntity();
+                                TrapVarbindEntity entity = new TrapVarbindEntity();
 
                                 entity.setOid(v.getOid());
                                 entity.setType(v.getType());

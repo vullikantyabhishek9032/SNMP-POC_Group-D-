@@ -1,265 +1,147 @@
 // http://localhost:8080/api/metrics/high-cpu
 
 export const MemoryDevicelist = [
-
     {
-
-        "id": 11,
-
+        "id": 3,
         "hostname": "server1",
-
-        "cpuUsage": 88.31,
-
-        "memoryUsage": 74.03,
-
+        "cpuUsage": 55.89,
+        "memoryUsage": 83.54,
         "memoryTotal": 8589934592,
-
-        "memoryUsed": 6359128578,
-
-        "memoryAvailable": 2230806014,
-
-        "diskUsage": 34.23,
-
-        "uptime": 687453,
-
-        "metricTimestamp": "2026-06-17T15:18:16.239158",
-
+        "memoryUsed": 7176031358,
+        "memoryAvailable": 1413903234,
+        "diskUsage": 56.92,
+        "uptime": 857408,
+        "metricTimestamp": "2026-06-17T15:17:36.926625",
         "createdAt": null
-
     },
-
     {
-
-        "id": 12,
-
-        "hostname": "server1",
-
-        "cpuUsage": 84.63,
-
-        "memoryUsage": 58.16,
-
-        "memoryTotal": 8589934592,
-
-        "memoryUsed": 4995905958,
-
-        "memoryAvailable": 3594028634,
-
-        "diskUsage": 73.77,
-
-        "uptime": 377212,
-
-        "metricTimestamp": "2026-06-17T15:18:16.589015",
-
-        "createdAt": null
-
-    },
-
-    {
-
-        "id": 22,
-
-        "hostname": "server1",
-
-        "cpuUsage": 92.55,
-
-        "memoryUsage": 49.19,
-
-        "memoryTotal": 8589934592,
-
-        "memoryUsed": 4225388825,
-
-        "memoryAvailable": 4364545767,
-
-        "diskUsage": 30.20,
-
-        "uptime": 1470300,
-
-        "metricTimestamp": "2026-06-17T15:18:38.129772",
-
-        "createdAt": null
-
-    },
-
-    {
-
         "id": 25,
-
         "hostname": "server1",
-
         "cpuUsage": 83.59,
-
         "memoryUsage": 90.56,
-
         "memoryTotal": 8589934592,
-
         "memoryUsed": 7779044766,
-
         "memoryAvailable": 810889826,
-
         "diskUsage": 34.76,
-
         "uptime": 2187354,
-
         "metricTimestamp": "2026-06-17T15:18:45.601119",
-
         "createdAt": null
-
     },
-
     {
-
-        "id": 35,
-
+        "id": 29,
         "hostname": "server1",
-
-        "cpuUsage": 86.09,
-
-        "memoryUsage": 43.44,
-
+        "cpuUsage": 56.74,
+        "memoryUsage": 84.33,
         "memoryTotal": 8589934592,
-
-        "memoryUsed": 3731467586,
-
-        "memoryAvailable": 4858467006,
-
-        "diskUsage": 31.39,
-
-        "uptime": 286702,
-
-        "metricTimestamp": "2026-06-24T07:38:53.702621",
-
+        "memoryUsed": 7243891841,
+        "memoryAvailable": 1346042751,
+        "diskUsage": 36.05,
+        "uptime": 461584,
+        "metricTimestamp": "2026-06-24T06:48:17.270295",
         "createdAt": null
-
     },
-
     {
-
-        "id": 64,
-
+        "id": 42,
         "hostname": "server1",
-
-        "cpuUsage": 91.46,
-
-        "memoryUsage": 52.73,
-
+        "cpuUsage": 34.41,
+        "memoryUsage": 80.81,
         "memoryTotal": 8589934592,
-
-        "memoryUsed": 4529472510,
-
-        "memoryAvailable": 4060462082,
-
-        "diskUsage": 35.46,
-
-        "uptime": 1217083,
-
-        "metricTimestamp": "2026-06-25T06:41:42.47901",
-
+        "memoryUsed": 6941526143,
+        "memoryAvailable": 1648408449,
+        "diskUsage": 34.54,
+        "uptime": 1910709,
+        "metricTimestamp": "2026-06-24T11:17:37.112928",
         "createdAt": null
-
     },
-
     {
-
-        "id": 66,
-
+        "id": 48,
         "hostname": "server1",
-
-        "cpuUsage": 86.25,
-
-        "memoryUsage": 60.87,
-
+        "cpuUsage": 49.65,
+        "memoryUsage": 91.30,
         "memoryTotal": 8589934592,
-
-        "memoryUsed": 5228693186,
-
-        "memoryAvailable": 3361241406,
-
-        "diskUsage": 39.13,
-
-        "uptime": 1767259,
-
-        "metricTimestamp": "2026-06-25T08:02:13.196832",
-
+        "memoryUsed": 7842610282,
+        "memoryAvailable": 747324310,
+        "diskUsage": 35.56,
+        "uptime": 1036825,
+        "metricTimestamp": "2026-06-24T14:05:20.300036",
         "createdAt": null
-
     },
-
     {
-
-        "id": 68,
-
+        "id": 50,
         "hostname": "server1",
-
-        "cpuUsage": 85.94,
-
-        "memoryUsage": 57.39,
-
+        "cpuUsage": 56.60,
+        "memoryUsage": 87.31,
         "memoryTotal": 8589934592,
-
-        "memoryUsed": 4929763462,
-
-        "memoryAvailable": 3660171130,
-
-        "diskUsage": 47.13,
-
-        "uptime": 988855,
-
-        "metricTimestamp": "2026-06-25T08:05:36.667712",
-
+        "memoryUsed": 7499871892,
+        "memoryAvailable": 1090062700,
+        "diskUsage": 38.06,
+        "uptime": 1269357,
+        "metricTimestamp": "2026-06-24T14:05:55.730019",
         "createdAt": null
-
     },
-
     {
-
+        "id": 53,
+        "hostname": "server1",
+        "cpuUsage": 28.63,
+        "memoryUsage": 81.41,
+        "memoryTotal": 8589934592,
+        "memoryUsed": 6993065751,
+        "memoryAvailable": 1596868841,
+        "diskUsage": 36.25,
+        "uptime": 1815244,
+        "metricTimestamp": "2026-06-25T06:05:03.148086",
+        "createdAt": null
+    },
+    {
+        "id": 54,
+        "hostname": "server1",
+        "cpuUsage": 45.93,
+        "memoryUsage": 84.41,
+        "memoryTotal": 8589934592,
+        "memoryUsed": 7250763789,
+        "memoryAvailable": 1339170803,
+        "diskUsage": 49.72,
+        "uptime": 544045,
+        "metricTimestamp": "2026-06-25T06:05:06.51823",
+        "createdAt": null
+    },
+    {
+        "id": 70,
+        "hostname": "server1",
+        "cpuUsage": 21.79,
+        "memoryUsage": 83.80,
+        "memoryTotal": 8589934592,
+        "memoryUsed": 7198365188,
+        "memoryAvailable": 1391569404,
+        "diskUsage": 45.52,
+        "uptime": 1504932,
+        "metricTimestamp": "2026-06-25T08:06:54.977381",
+        "createdAt": null
+    },
+    {
+        "id": 72,
+        "hostname": "server1",
+        "cpuUsage": 43.30,
+        "memoryUsage": 87.94,
+        "memoryTotal": 8589934592,
+        "memoryUsed": 7553988480,
+        "memoryAvailable": 1035946112,
+        "diskUsage": 30.19,
+        "uptime": 1734977,
+        "metricTimestamp": "2026-06-25T08:07:31.53738",
+        "createdAt": null
+    },
+    {
         "id": 75,
-
         "hostname": "server1",
-
         "cpuUsage": 90.24,
-
         "memoryUsage": 87.76,
-
         "memoryTotal": 8589934592,
-
         "memoryUsed": 7538526597,
-
         "memoryAvailable": 1051407995,
-
         "diskUsage": 39.35,
-
         "uptime": 1569040,
-
         "metricTimestamp": "2026-06-25T08:09:17.980521",
-
         "createdAt": null
-
-    },
-
-    {
-
-        "id": 80,
-
-        "hostname": "server1",
-
-        "cpuUsage": 83.33,
-
-        "memoryUsage": 40.59,
-
-        "memoryTotal": 8589934592,
-
-        "memoryUsed": 3486654450,
-
-        "memoryAvailable": 5103280142,
-
-        "diskUsage": 44.40,
-
-        "uptime": 384712,
-
-        "metricTimestamp": "2026-06-25T08:12:33.596831",
-
-        "createdAt": null
-
     }
-
 ]

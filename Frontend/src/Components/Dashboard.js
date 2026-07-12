@@ -15,20 +15,34 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { Todaydemo } from "../Endpoint/endpoint";
 
 export default function SelectActionCard() {
-    const [data, setData] = useState({
-        totalAlerts: 13,
-        criticalAlerts: 8,
-        highCpuDevices: 10,
-        highMemoryDevices: 11
+    const [APidata, setApidata] = useState();
+
+    const getData = async () => {
+        try {
+            const response = await fetch(`${Todaydemo}/api/dashboard/summary`)
+            const getResponse = await response.json();
+            if (getResponse) {
+                console.log("log the response in the UI", getResponse)
+                setApidata(getResponse)
+            }
+        } catch (error) {
+            console.log("log the error here....", error)
+        }
     }
-    )
+    console.log("view the data here...", APidata)
+    useEffect(() => {
+        getData()
+    }, [])
+
+
     const cards = [
-        { id: 1, title: "Alerts", description: data.totalAlerts },
-        { id: 2, title: "Critical Alerts", description: data.criticalAlerts },
-        { id: 3, title: "Cpu Devices", description: data.highCpuDevices },
-        { id: 4, title: "Memory Devices", description: data.highMemoryDevices },
+        { id: 1, title: "Alerts", description: APidata?.totalAlerts || 0 },
+        { id: 2, title: "Critical Alerts", description: APidata?.criticalAlerts || 0},
+        { id: 3, title: "Cpu Devices", description: APidata?.highCpuDevices || 0 },
+        { id: 4, title: "Memory Devices", description: APidata?.highMemoryDevices || 0 },
     ];
     const [selectedCard, setSelectedCard] = React.useState(0);
     const navigate = useNavigate();
@@ -38,10 +52,6 @@ export default function SelectActionCard() {
         navigate(routes[index]);
     };
 
-    // useEffect(() => {
-    //     setData()
-    // }, [])
-
     return (
         <Box sx={{ p: { xs: 1, sm: 2, md: 3 } }}>
 
@@ -49,9 +59,9 @@ export default function SelectActionCard() {
                 sx={{
                     display: "grid",
                     gridTemplateColumns: {
-                        xs: "1fr",          // mobile
-                        sm: "repeat(2, 1fr)", // tablet
-                        md: "repeat(4, 1fr)", // desktop
+                        xs: "1fr",
+                        sm: "repeat(2, 1fr)",
+                        md: "repeat(4, 1fr)",
                     },
                     gap: 2,
                 }}
@@ -107,8 +117,8 @@ export default function SelectActionCard() {
                     mt: 3,
                     display: "grid",
                     gridTemplateColumns: {
-                        xs: "1fr",        // mobile
-                        md: "30% 70%",   // desktop
+                        xs: "1fr",
+                        md: "30% 70%",
                     },
                     gap: 2,
                 }}

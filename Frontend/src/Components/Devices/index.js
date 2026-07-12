@@ -6,7 +6,7 @@ import { CPUDevices } from "../../Constants/CPUDevices";
 import { Todaydemo } from "../../Endpoint/endpoint";
 
 
-export default function Devicelist() {
+export default function Cpudevicelist() {
     const columns = [
         { field: 'id', headerName: 'ID', width: 90 },
         {

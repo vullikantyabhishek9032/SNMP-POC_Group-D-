@@ -34,22 +34,15 @@ public class MonitoringController {
     }
 
     @GetMapping("/traps/recent")
-    public String syncRecentTraps(
-            @RequestParam(defaultValue = "10")
-            int limit) {
+    public SnmpTrapDTO[] syncRecentTraps(@RequestParam(defaultValue = "10") int limit) {
 
-        service.syncRecentTraps(limit);
-
-        return "Recent Traps Synced";
+        return service.syncRecentTraps(limit);
     }
 
     @GetMapping("/traps/host/{host}")
-    public String syncHostTraps(
-            @PathVariable String host) {
+    public SnmpTrapDTO[] syncHostTraps(@PathVariable String host) {
 
-        service.syncHostTraps(host);
-
-        return "Host Traps Synced";
+        return  service.syncHostTraps(host);
     }
 
     @GetMapping("/traps/severity/{severity}")
@@ -59,12 +52,9 @@ public class MonitoringController {
     }
 
     @GetMapping("/traps/{trapId}")
-    public String syncTrapById(
-            @PathVariable Long trapId) {
+    public ResponseEntity<SnmpTrapDTO> syncTrapById(@PathVariable Long trapId) {
 
-        service.syncTrapById(trapId);
-
-        return "Trap Synced";
+        return ResponseEntity.ok(service.syncTrapById(trapId));
     }
 
     @GetMapping("/collect/{hostname}")
@@ -78,8 +68,7 @@ public class MonitoringController {
     }
 
     @GetMapping("/status/{hostname}")
-    public SnmpResponse getStatus(
-            @PathVariable String hostname) {
+    public SnmpResponse getStatus(@PathVariable String hostname) {
         System.out.println(hostname);
         return service.getStatus(hostname);
     }
