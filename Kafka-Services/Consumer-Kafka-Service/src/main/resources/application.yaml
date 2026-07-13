@@ -17,7 +17,6 @@ spring:
 
         spring.json.trusted.packages: "*"
 
-        # IMPORTANT
         spring.json.use.type.headers: false
         spring.json.value.default.type: com.hcl.Troy.DTO.RecommendationDTO
 
