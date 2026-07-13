@@ -10,7 +10,7 @@ public class ConsumerKafkaServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ConsumerKafkaServiceApplication.class, args);
-		System.out.println("consumer");
+		System.out.println("Consumer Kafka Service is Running");
 	}
 
 }
