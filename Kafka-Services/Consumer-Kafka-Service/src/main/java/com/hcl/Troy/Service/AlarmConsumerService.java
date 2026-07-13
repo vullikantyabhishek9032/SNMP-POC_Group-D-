@@ -11,16 +11,16 @@ import java.util.List;
 @Service
 public class AlarmConsumerService {
 
-    private final List<MonitoringEvent> consumedMetricsEvents =
-            new ArrayList<>();
-    private final List<AlertEvent> consumedAlertEvents =
-            new ArrayList<>();
-    private final List<SnmpTrapDTO> consumedSnmpTraps =
-            new ArrayList<>();
-    private final List<TrapVarbindDTO> consumedTrapVarbinds =
-            new ArrayList<>();
+    private final List<MonitoringEvent> consumedMetricsEvents = new ArrayList<>();
+
+    private final List<AlertEvent> consumedAlertEvents = new ArrayList<>();
+
+    private final List<SnmpTrapDTO> consumedSnmpTraps = new ArrayList<>();
+
+    private final List<TrapVarbindDTO> consumedTrapVarbinds = new ArrayList<>();
 
     private final List<RecommendationDTO> recommendations = new ArrayList<>();
+    
     @KafkaListener(
             topics = "metrics-topic",
             groupId = "metrics-group"
