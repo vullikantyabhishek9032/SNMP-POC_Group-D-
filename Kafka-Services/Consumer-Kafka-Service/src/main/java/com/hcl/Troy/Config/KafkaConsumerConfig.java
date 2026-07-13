@@ -29,7 +29,7 @@ public class KafkaConsumerConfig {
         Map<String, Object> props = new HashMap<>();
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092");
+                "10.161.5.175:9092");
 
         props.put(ConsumerConfig.GROUP_ID_CONFIG,
                 "alarm-group");
@@ -70,7 +70,7 @@ public class KafkaConsumerConfig {
 
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092");
+                "10.161.5.175:9092");
 
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
@@ -97,48 +97,3 @@ public class KafkaConsumerConfig {
         return factory;
     }
 }
-/*
-
-@Configuration
-@EnableKafka
-public class KafkaConsumerConfig {
-
-    @Bean
-    public ConsumerFactory<String, RecommendationDTO> consumerFactory() {
-
-        JsonDeserializer<RecommendationDTO> deserializer =
-                new JsonDeserializer<>(RecommendationDTO.class);
-
-        deserializer.addTrustedPackages("*");
-        deserializer.ignoreTypeHeaders();
-        Map<String, Object> props = new HashMap<>();
-
-        props.put(
-                ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092");
-
-        props.put(
-                ConsumerConfig.GROUP_ID_CONFIG,
-                "metrics-group");
-
-        return new DefaultKafkaConsumerFactory<>(
-                props,
-                new StringDeserializer(),
-                deserializer
-        );
-    }
-
-
-    @Bean(name = "kafkaListenerContainerFactory")
-    public ConcurrentKafkaListenerContainerFactory<String, RecommendationDTO>
-    kafkaListenerContainerFactory() {
-
-        ConcurrentKafkaListenerContainerFactory<String, RecommendationDTO>
-                factory =
-                new ConcurrentKafkaListenerContainerFactory<>();
-
-        factory.setConsumerFactory(consumerFactory());
-
-        return factory;
-    }
-}*/

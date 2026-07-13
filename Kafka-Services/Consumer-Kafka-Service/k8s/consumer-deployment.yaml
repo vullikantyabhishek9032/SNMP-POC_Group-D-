@@ -22,7 +22,7 @@ spec:
             - containerPort: 8086
           env:
             - name: SPRING_KAFKA_BOOTSTRAP_SERVERS
-              value: kafka-service:9092
+              value: 10.161.5.175:9092
             - name: SPRING_KAFKA_CONSUMER_GROUP_ID
               value: group_id
             - name: SPRING_KAFKA_CONSUMER_AUTO_OFFSET_RESET
