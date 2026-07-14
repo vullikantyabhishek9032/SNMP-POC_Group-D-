@@ -1,8 +1,6 @@
 package com.hcl.Troy.Service;
 
-import com.fasterxml.jackson.databind.Module;
 import com.hcl.Troy.DTO.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -33,37 +31,25 @@ public class AlarmProducerService {
 
 
 
-    public void publishMetrics(
-            MonitoringEvent event) {
+    public void publishMetrics(MonitoringEvent event) {
 
-        metricsKafkaTemplate.send(
-                "metrics-topic",
-                event);
+        metricsKafkaTemplate.send("metrics-topic", event);
     }
 
-    public void publishAlert(
-            AlertEvent event) {
+    public void publishAlert(AlertEvent event) {
 
-        alertKafkaTemplate.send(
-                "alerts-topic",
-                event);
+        alertKafkaTemplate.send("alerts-topic", event);
     }
 
     public void publishSnmoTrap(SnmpTrapDTO dto) {
 
-        kafkaTrapTemplate.send(
-                "snm-trap-topic",
-                String.valueOf(dto.getTrapId()),
-                dto);
+        kafkaTrapTemplate.send("snm-trap-topic", String.valueOf(dto.getTrapId()), dto);
     }
 
 
     public void publishTrapVarTrap(TrapVarbindDTO dto) {
 
-        kafkaVarbindTrapTemplate.send(
-                "trap-varbinds-topic",
-                String.valueOf(dto.getOid()),
-                dto);
+        kafkaVarbindTrapTemplate.send("trap-varbinds-topic", String.valueOf(dto.getOid()), dto);
     }
 
     public String sendUsage(@RequestBody CustomerUsage payload) {
