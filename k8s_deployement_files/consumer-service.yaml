@@ -5,7 +5,7 @@
     labels:
       app: consumer-kafka-service
   spec:
-    type: ClusterIP
+    type: NodePort
     selector:
       app: consumer-kafka-service
     ports:
