@@ -25,8 +25,7 @@ public class AlarmController {
     }
 
     @PostMapping("/publish/alerts")
-    public String publishCriticalAlarm(
-            @RequestBody AlertEvent event) {
+    public String publishCriticalAlarm(@RequestBody AlertEvent event) {
 
         producerService.publishAlert(event);
 
@@ -34,16 +33,14 @@ public class AlarmController {
     }
 
     @PostMapping("/publish/snmptraps")
-    public String publishTrap(
-            @RequestBody SnmpTrapDTO event) {
+    public String publishTrap(@RequestBody SnmpTrapDTO event) {
 
         producerService.publishSnmoTrap(event);
 
         return "Traps  Published";
     }
     @PostMapping("/publish/trapvarbind")
-    public String publishVarbindTrap(
-            @RequestBody TrapVarbindDTO event) {
+    public String publishVarbindTrap(@RequestBody TrapVarbindDTO event) {
 
         producerService.publishTrapVarTrap(event);
 
