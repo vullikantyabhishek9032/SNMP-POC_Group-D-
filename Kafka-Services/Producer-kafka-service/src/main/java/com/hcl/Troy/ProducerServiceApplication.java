@@ -8,7 +8,7 @@ public class ProducerServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ProducerServiceApplication.class, args);
-		System.out.println("Producer service ");
+		System.out.println("Producer Kafka service ");
 	}
 
 }
