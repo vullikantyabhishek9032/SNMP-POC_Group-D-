@@ -21,13 +21,11 @@ public class ConsumerController {
 
     @GetMapping("/metrics/events")
     public List<MonitoringEvent> getEvents() {
-
         return consumerService.getAllEvents();
     }
 
     @GetMapping("/alerts/events")
     public List<AlertEvent> getAlertEvents() {
-
         return consumerService.getAllAlertEvents();
     }
 
