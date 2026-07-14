@@ -19,7 +19,7 @@ spec:
           image: kafka-producer:1.0
           imagePullPolicy: Never   # since using local image
           ports:
-            - containerPort: 8081
+            - containerPort: 8083
           env:
             - name: KAFKA_BOOTSTRAP_SERVERS
               value: "10.161.5.175:9092"
