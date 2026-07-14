@@ -39,29 +39,18 @@ public class KafkaConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
-        );
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-        config.put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        config.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
 
-        JsonSerializer<MonitoringEvent> serializer =
-                new JsonSerializer<>(mapper);
+        JsonSerializer<MonitoringEvent> serializer = new JsonSerializer<>(mapper);
 
-        return new DefaultKafkaProducerFactory<>(
-                config,
-                new StringSerializer(),
-                serializer);
+        return new DefaultKafkaProducerFactory<>(config, new StringSerializer(), serializer);
     }
 
     @Bean
@@ -75,18 +64,11 @@ public class KafkaConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
-        );
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-        config.put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        config.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         return new DefaultKafkaProducerFactory<>(config);
     }
@@ -102,17 +84,14 @@ public class KafkaConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
-        );
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
-        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
-
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         return new DefaultKafkaProducerFactory<>(config);
     }
+
+
     @Bean
     @Primary
     public KafkaTemplate<String, CustomerUsage> kafkaCustomerTemplate() {
@@ -135,18 +114,11 @@ public class KafkaConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
-        );
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-        config.put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        config.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         return new DefaultKafkaProducerFactory<>(config);
     }
@@ -162,18 +134,11 @@ public class KafkaConfig {
 
         Map<String, Object> config = new HashMap<>();
 
-        config.put(
-                ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092"
-        );
+        config.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
 
-        config.put(
-                ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,
-                StringSerializer.class);
+        config.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
 
-        config.put(
-                ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,
-                JsonSerializer.class);
+        config.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class);
 
         return new DefaultKafkaProducerFactory<>(config);
     }
@@ -187,11 +152,9 @@ public class KafkaConfig {
     @Bean
     public KStream<String, String> process(StreamsBuilder builder) {
 
-        KStream<String, String> stream =
-                builder.stream("usage-topic", Consumed.with(Serdes.String(), Serdes.String()));
+        KStream<String, String> stream = builder.stream("usage-topic", Consumed.with(Serdes.String(), Serdes.String()));
 
-        KStream<String, String> filtered =
-                stream.filter((key, value) -> {
+        KStream<String, String> filtered = stream.filter((key, value) -> {
 
                     try {
 
@@ -225,46 +188,35 @@ public class KafkaConfig {
 
             try {
 
-                CustomerUsage usage =
-                        objectMapper.readValue(
-                                value,
-                                CustomerUsage.class);
+                CustomerUsage usage = objectMapper.readValue(value, CustomerUsage.class);
 
-                System.out.println(
-                        "Customer : "
-                                + usage.getCustomerId());
+                System.out.println("Customer : " + usage.getCustomerId());
 
-                System.out.println(
-                        "Usage : "
-                                + usage.getUsage());
+                System.out.println("Usage : " + usage.getUsage());
 
-                System.out.println(
-                        "Timestamp : "
-                                + usage.getTimestamp());
+                System.out.println("Timestamp : " + usage.getTimestamp());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         });
-        KStream<String, String> recommendationStream =
-                filtered.mapValues(value -> {
+        KStream<String, String> recommendationStream = filtered.mapValues(value -> {
 
                     try {
 
-                        CustomerUsage usage =
-                                objectMapper.readValue(
-                                        value,
-                                        CustomerUsage.class);
+                        CustomerUsage usage = objectMapper.readValue(value, CustomerUsage.class);
 
-                        RecommendationDTO recommendation =
-                                planService.getRecommendation(usage);
+                        RecommendationDTO recommendation = planService.getRecommendation(usage);
+
                         System.out.println("Mail is going to send");
+
                         emailService.sendRecommendationMail(recommendation);
+
                         System.out.println("Mail sent ");
+
                         if (recommendation != null) {
 
-                            return objectMapper
-                                    .writeValueAsString(recommendation);
+                            return objectMapper.writeValueAsString(recommendation);
                         }
 
 
@@ -275,12 +227,8 @@ public class KafkaConfig {
                     return null;
                 });
 
-        recommendationStream
-                .filter((k, v) -> v != null)
-                .peek((k,v) ->
-                        System.out.println(
-                                "SENDING TO recommendation-topic => " + v))
-                .to("recommendation-topic");
+        recommendationStream.filter((k, v) -> v != null).peek((k,v) -> System.out.println("SENDING TO recommendation-topic => " + v)).to("recommendation-topic");
+
         return filtered;
     }
 }
