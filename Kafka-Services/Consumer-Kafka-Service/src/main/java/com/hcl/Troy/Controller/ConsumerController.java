@@ -35,6 +35,5 @@ public class ConsumerController {
 
         return consumerService.getRecommendations();
     }
-
-
+    
 }
