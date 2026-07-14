@@ -7,9 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface RechargeHistoryRepository
-        extends JpaRepository<RechargeHistory, Long> {
+public interface RechargeHistoryRepository extends JpaRepository<RechargeHistory, Long> {
 
-    List<RechargeHistory> findByCustomerIdOrderByRechargeDateDesc(
-            String customerId);
+    List<RechargeHistory> findByCustomerIdOrderByRechargeDateDesc(String customerId);
 }
