@@ -18,8 +18,7 @@ public class EmailService {
 
         message.setTo("sirasanisivakrishna26@gmail.com");
         message.setFrom("sirasanisivakrishna26@gmail.com");
-        message.setSubject(
-                "Plan Recommendation");
+        message.setSubject("Plan Recommendation");
 
         message.setText("Customer : "+recommendationDTO.getCustomerId()
                         + "\nCurrent Plan : "+recommendationDTO.getCurrentPlan()
