@@ -27,8 +27,7 @@ public interface TrapRepository extends JpaRepository<Trap, Long> {
     long countByProcessedFalse();
 
     long deleteByTimestampBefore(LocalDateTime time);
-
-    // Optional methods
+    
     long countByTimestampBetween(LocalDateTime start, LocalDateTime end);
 
     long countBySeverity(Severity severity);
