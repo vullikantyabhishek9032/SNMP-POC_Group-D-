@@ -8,6 +8,7 @@ public class AlertReadServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AlertReadServiceApplication.class, args);
+        System.out.println("Alert Read Service");
 	}
 
 }
