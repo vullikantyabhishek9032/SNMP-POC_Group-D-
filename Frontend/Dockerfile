@@ -1,5 +1,5 @@
 # Step 1: Build React app
-FROM node:18 AS build
+FROM node:20 AS build
 
 WORKDIR /app
 
@@ -7,13 +7,13 @@ WORKDIR /app
 COPY package*.json ./
 
 # Install dependencies and fix permissions
-RUN npm install && chmod +x node_modules/.bin/react-scripts
-
-# Install dependencies
-RUN npm install
+RUN npm install && chmod -R 755 node_modules/.bin
 
 # Copy full project
 COPY . .
+
+# Disable CI mode
+ENV CI=false
 
 # Build production app
 RUN npm run build
