@@ -6,6 +6,9 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
+# Install dependencies and fix permissions
+RUN npm install && chmod +x node_modules/.bin/react-scripts
+
 # Install dependencies
 RUN npm install
 
