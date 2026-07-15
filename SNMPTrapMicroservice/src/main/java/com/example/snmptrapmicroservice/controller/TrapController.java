@@ -148,4 +148,6 @@ public class TrapController {
         private Long mediumCount;
         private Long lowCount;
     }
+
+    
 }
