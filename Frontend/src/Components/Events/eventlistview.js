@@ -1,12 +1,3 @@
-// export default function EventlistView(){
-//     return (
-//         <>
-//         <h2>
-//             ..............................
-//         </h2>
-//         </>
-//     )
-// }
 
 import { useEffect, useState } from "react";
 import { Styles } from "../../CommonComponents/Commonstyles";
@@ -82,21 +73,13 @@ export default function EventlistView() {
                     <Searchinput PlaceHolder={"Search by Event Name"} />
                 </div>
                 <div style={Styles.tableContainer}>
-                    <DataGridDemo columns={columns} rows={data?.map((datas, index) => ({
-                        ...datas,
-                        id: index + 1,
-                        timestamp: datas.timestamp
-                            ? new Date(
-                                datas.timestamp
-                            ).toLocaleDateString("en-GB", {
-                                day: "2-digit",
-                                month: "short",
-                                year: "numeric",
-                            })
-                            : "",
-                    }))}
-  />
-                    <DataGridDemo columns={columns} rows={data} />
+                    <DataGridDemo columns={columns} 
+                    // rows={data}
+                      rows={data?.map((datas, index) => ({
+                                ...datas,
+                                id: index + 1,
+                            }))}
+                     />
                 </div>
             </div>
         </>

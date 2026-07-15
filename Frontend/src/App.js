@@ -4,7 +4,6 @@ import PermanentDrawerLeft from "./Drawer";
 import Alaramlist from "./Components/alarmlist";
 import SelectActionCard from "./Components/Dashboard";
 import Performacelist from "./Components/Performace";
-import Reportlist from "./Components/Report";
 import MetricsList from "./Components/Metrics";
 import Login from "./Components/Login";
 import ProtectedRoute from "./Components/Protectedroute";
@@ -16,6 +15,7 @@ import Planlist from "./Components/Report";
 import AddUser from "./Userdetails/adduserdetails";
 import Viewuserdetails from "./Userdetails/vieworedituserdetails";
 import EventlistView from "./Components/Events/eventlistview";
+import Addnewrole from "./Components/Topology/addrolescreen";
 
 const Settings = () => <h2>Settings Page</h2>
 
@@ -31,6 +31,7 @@ function LayoutModel() {
         <Route path="/events" element={<EventlistView />} />
         <Route path="/performance" element={<Performacelist />} />
         <Route path="/roles" element={<Roles />} />
+        <Route path="/Addnewrole" element={<Addnewrole />} />
         <Route path="/avaviableplans" element={<Planlist />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/user" element={<UserDetails />} />

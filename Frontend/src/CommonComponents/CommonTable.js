@@ -1,38 +1,52 @@
+import React from "react";
 import { Box, useTheme, useMediaQuery } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 
-export default function DataGridDemo({ columns, rows }) {
-
+const DataGridDemo = ({ columns, rows }) => {
   const theme = useTheme();
-
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
+  const responsiveColumns = columns.map((column) => ({
+    ...column,
+    flex: column.flex || 1,
+    minWidth: column.minWidth || 120,
+  }));
 
   return (
     <Box
       sx={{
         width: "100%",
-        height: isMobile ? 300 : 400,
+        overflowX: "auto",
+        "& .MuiDataGrid-root": {
+          border: 1,
+          borderColor: "divider",
+        },
       }}
     >
       <DataGrid
         rows={rows}
-        columns={columns}
-        autoHeight={isMobile}
+        columns={responsiveColumns}
+        autoHeight
+        disableRowSelectionOnClick
+        checkboxSelection={!isMobile}
+        pageSizeOptions={[5, 10, 20]}
         initialState={{
           pagination: {
             paginationModel: {
-              pageSize: isMobile ? 3 : 5,
+              pageSize: isMobile ? 5 : 10,
             },
           },
         }}
-        pageSizeOptions={[3, 5, 10]}
-        checkboxSelection={!isMobile}
-        disableRowSelectionOnClick
+        sx={{
+          minWidth: "100%",
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#f5f5f5",
+            fontWeight: "bold",
+          },
+        }}
       />
     </Box>
   );
-}
+};
 
-
-
-
+export default DataGridDemo;

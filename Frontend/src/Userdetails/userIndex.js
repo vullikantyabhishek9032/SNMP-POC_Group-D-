@@ -6,6 +6,8 @@ import DataGridDemo from "../CommonComponents/CommonTable";
 import { UserDetailslist } from "../Components/userdetailslist";
 import { useNavigate } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useEffect, useState } from "react";
+import { userDataUrl } from "../Endpoint/endpoint";
 
 export default function UserDetails() {
 
@@ -15,8 +17,8 @@ export default function UserDetails() {
     const columns = [
         { field: "id", headerName: "ID", width: 90 },
         {
-            field: "Name",
-            headerName: "Name",
+            field: "username",
+            headerName: "User Name",
             width: 150,
             editable: false,
         },
@@ -33,7 +35,7 @@ export default function UserDetails() {
             editable: false,
         },
         {
-            field: "mobile_no",
+            field: "mobileNumber",
             headerName: "Mobile Number",
             width: 180,
             editable: false,
@@ -62,7 +64,7 @@ export default function UserDetails() {
                             color="error"
                             sx={{ ml: 1 }}
                         // onClick={() => handleDelete(params.row)}
-                        >=
+                        >
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
@@ -81,6 +83,24 @@ export default function UserDetails() {
         navigate("/addUser")
     }
 
+    const [data, setData] = useState([]);
+
+    const response = async () => {
+        try {
+            const ApiCall = await fetch(`${userDataUrl}/api/users`)
+            const storeResponse = await ApiCall.json();
+            if (storeResponse) {
+                setData(storeResponse);
+            }
+        } catch (error) {
+            console.log("log the error here", error);
+        }
+    }
+
+    useEffect(() => {
+        response();
+    }, [])
+    console.log("view user data here", data)
     return (
         <>
             <Box
@@ -113,7 +133,7 @@ export default function UserDetails() {
                 <div style={Styles.tableContainer}>
                     <DataGridDemo
                         columns={columns}
-                        rows={rowsvalue}
+                        rows={data}
                     />
                 </div>
             </div>

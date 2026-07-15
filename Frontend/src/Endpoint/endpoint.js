@@ -53,6 +53,8 @@ export const AlertURL = `${baseurl}/users`;
 
  export const eventsUrl = `http://localhost:8086`
 
+ export const userDataUrl = `http://localhost:8080`
+
 
 
 
