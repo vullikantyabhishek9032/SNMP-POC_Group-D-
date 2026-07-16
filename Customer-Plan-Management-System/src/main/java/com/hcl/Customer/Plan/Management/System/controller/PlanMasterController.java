@@ -16,12 +16,12 @@ public class PlanMasterController {
     @Autowired
     private PlanMasterService service;
 
-    @PostMapping
+    @PostMapping("/createplans")
     public PlanMaster savePlan(@RequestBody PlanMasterDTO dto) {
         return service.savePlan(dto);
     }
 
-    @GetMapping
+    @GetMapping("fetechPlans")
     public List<PlanMaster> getAllPlans() {
         return service.getAllPlans();
     }
