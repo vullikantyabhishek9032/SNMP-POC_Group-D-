@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: alert-read-container
-          image: alert-read-service:1.0
-          imagePullPolicy: Never
+          image: 10.161.5.175:5000/alert-read-service:1.0
+          imagePullPolicy: Always
           ports:
             - containerPort: 8089

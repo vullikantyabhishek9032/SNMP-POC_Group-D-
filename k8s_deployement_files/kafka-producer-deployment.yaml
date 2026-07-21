@@ -16,8 +16,8 @@ spec:
     spec:
       containers:
         - name: kafka-container
-          image: kafka-producer:1.0
-          imagePullPolicy: Never   # since using local image
+          image: 10.161.5.175:5000/kafka-producer:1.0
+          imagePullPolicy: Always   # since using local image
           ports:
             - containerPort: 8083
           env:

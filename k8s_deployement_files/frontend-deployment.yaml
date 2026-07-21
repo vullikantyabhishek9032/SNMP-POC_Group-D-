@@ -21,8 +21,8 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: frontend:1.0
-          imagePullPolicy: Never
+          image: 10.161.5.175:5000/frontend:1.0
+          imagePullPolicy: Always
 
           ports:
             - containerPort: 80
