@@ -59,10 +59,7 @@ public class AlarmConsumerService {
     }
 
 
-    @KafkaListener(
-            topics = "recommendation-topic",
-            groupId = "recommendation-group-v21",
-            containerFactory = "kafkaListenerContainerRecommendationFactory")
+    @KafkaListener(topics = "recommendation-topic", groupId = "recommendation-group-v21", containerFactory = "kafkaListenerContainerRecommendationFactory")
     public void consume(RecommendationDTO dto) {
 
         recommendations.add(dto);
@@ -79,8 +76,7 @@ public class AlarmConsumerService {
 
     @PostConstruct
     public void init() {
-        System.out.println("LIST SIZE AT STARTUP = "
-                + recommendations.size());
+        System.out.println("LIST SIZE AT STARTUP = " + recommendations.size());
     }
 
 }
