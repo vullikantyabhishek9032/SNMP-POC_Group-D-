@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: metricsalerts-container
-          image: 10.161.5.175:5000/alarmseventsservice:1.0
+          image: 10.161.5.175:5000/alarmseventsservice:8
           imagePullPolicy: Always
           ports:
             - containerPort: 8084
