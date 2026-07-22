@@ -17,13 +17,13 @@ spring:
 
 
 snmp:
-  url: "http://localhost:8080/"
+  url: "http://10.161.5.175:8080/"
   trap:
-    url: "http://localhost:8085/api/traps"
+    url: "http://10.161.5.175:8085/api/traps"
 
 producer:
   kafka:
-    service: "http://localhost:8083/"
+    service: "http://10.161.5.175:8083/"
 
 
 server:
