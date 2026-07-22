@@ -12,7 +12,7 @@ public class SnmpTrapMicroserviceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SnmpTrapMicroserviceApplication.class, args);
-        System.out.println("SNMPTrap Service is Running ");
+        System.out.println("SNMPTrap Service is Running");
 	}
 
 }
