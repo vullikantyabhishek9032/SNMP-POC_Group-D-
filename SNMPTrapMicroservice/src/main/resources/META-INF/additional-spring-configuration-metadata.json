@@ -1,0 +1,42 @@
+{"properties": [
+  {
+    "name": "snmp.trap.port",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.trap.port'"
+  },
+  {
+    "name": "snmp.trap.community",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.trap.community'"
+  },
+  {
+    "name": "snmp.trap.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.trap.enabled'"
+  },
+  {
+    "name": "simulator.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'simulator.enabled'"
+  },
+  {
+    "name": "simulator.trap.interval",
+    "type": "java.lang.String",
+    "description": "A description for 'simulator.trap.interval'"
+  },
+  {
+    "name": "management.endpoints.web.exposure.include",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoints.web.exposure.include'"
+  },
+  {
+    "name": "management.endpoint.health.show-details",
+    "type": "java.lang.String",
+    "description": "A description for 'management.endpoint.health.show-details'"
+  },
+  {
+    "name": "snmp.target.host",
+    "type": "java.lang.String",
+    "description": "A description for 'snmp.target.host'"
+  }
+]}
