@@ -8,5 +8,6 @@ public class CustomerPlanManagementSystemApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CustomerPlanManagementSystemApplication.class, args);
+        System.out.println("Customer Plan Management Service Running ");
 	}
 }

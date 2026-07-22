@@ -15,6 +15,7 @@ public class UsermanagementApplication {
 		SpringApplication.run(
 				UsermanagementApplication.class,
 				args);
+        System.out.println("User management service Running ");
 	}
 
 	@Bean
