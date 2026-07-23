@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: 10.161.5.175:5000/frontend:10
+          image: 10.161.5.175:5000/frontend:12
           imagePullPolicy: Always
 
           ports:
