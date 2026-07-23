@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface MetricsRepository extends JpaRepository<Metrics, Long> {
 
-    Optional<Metrics> findByHostname(String hostname);
+    List<Metrics> findByHostname(String hostname);
 
     List<Metrics> findByCpuUsageGreaterThan(BigDecimal cpuUsage);
 

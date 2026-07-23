@@ -20,11 +20,9 @@ public class MetricsService {
         return metricsRepository.findAll();
     }
 
-    public Metrics getMetricsByHostname(String hostname) {
+    public List<Metrics> getMetricsByHostname(String hostname) {
 
-        return metricsRepository.findByHostname(hostname)
-                .orElseThrow(() ->
-                        new RuntimeException("Metrics not found"));
+        return metricsRepository.findByHostname(hostname);
     }
 
     public List<Metrics> getHighCpuDevices() {
