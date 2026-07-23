@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/monitoring")
-@CrossOrigin(origins ="http://localhost:3000")
+@CrossOrigin(origins ={"http://localhost:3000","http://localhost:30080"})
 public class MonitoringController {
 
     private final MonitoringService monitoringService;

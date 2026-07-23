@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/metrics")
-@CrossOrigin(origins ="http://localhost:3000")
+@CrossOrigin(origins ={"http://localhost:3000","http://localhost:30080"})
 public class MetricsController {
 
     private final MetricsService metricsService;
