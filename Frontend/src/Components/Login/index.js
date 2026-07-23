@@ -49,6 +49,9 @@ const Login = () => {
 
     const onSubmit = (datavalues) => {
         console.log("Login clicked", datavalues);
+        //  localStorage.getItem("isLoggedIn") === "true"
+        localStorage.setItem("isLoggedIn", "true")
+        navigate("/dashboard")
     };
 
     return (
