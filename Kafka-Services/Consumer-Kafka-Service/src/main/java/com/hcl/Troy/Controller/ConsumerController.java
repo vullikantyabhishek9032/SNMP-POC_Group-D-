@@ -8,7 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/consumer")
-@CrossOrigin(origins ="http://localhost:3000")
+@CrossOrigin(origins ={"http://localhost:3000","http://localhost:30080"})
 public class ConsumerController {
 
     private final AlarmConsumerService consumerService;
@@ -37,5 +37,5 @@ public class ConsumerController {
     }
 
 
-    
+
 }
