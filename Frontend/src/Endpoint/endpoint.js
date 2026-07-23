@@ -49,12 +49,16 @@ export const EventURL = `${baseurl}/api/alerts/hostname/server1`;
 export const AlertURL = `${baseurl}/users`;
 
 
- export const Todaydemo = `http://localhost:8089`
+export const Todaydemo = `http://10.161.5.175:8089`
 
- export const eventsUrl = `http://localhost:8086`
+ export const eventsUrl = `http://10.161.5.175:8086`
 
- export const userDataUrl = `http://localhost:8080`
-
-
+export const userDataUrl = `http://10.161.5.175:9991`
 
 
+
+
+
+
+
+ 
