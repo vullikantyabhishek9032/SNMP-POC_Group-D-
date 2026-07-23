@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/metrics")
+@CrossOrigin(origins ="http://localhost:3000")
 public class MetricsController {
 
     private final MetricsService metricsService;
@@ -22,7 +23,7 @@ public class MetricsController {
     }
 
     @GetMapping("/{hostname}")
-    public Metrics getMetricsByHostname(
+    public List<Metrics> getMetricsByHostname(
             @PathVariable String hostname) {
 
         return metricsService.getMetricsByHostname(hostname);

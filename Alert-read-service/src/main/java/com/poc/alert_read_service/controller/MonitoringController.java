@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/monitoring")
+@CrossOrigin(origins ="http://localhost:3000")
 public class MonitoringController {
 
     private final MonitoringService monitoringService;
@@ -39,12 +40,12 @@ public class MonitoringController {
     }
 
     @GetMapping("/traps/{trapId}")
-    public Trap getTrapById(@PathVariable String trapId) {
+    public Trap getTrapById(@PathVariable Long trapId) {
         return monitoringService.getTrapById(trapId);
     }
 
     @GetMapping("/collect/{hostname}")
-    public Metrics collectMetrics(@PathVariable String hostname) {
+    public List<Metrics> collectMetrics(@PathVariable String hostname) {
         return monitoringService.collectMetricsByHostname(hostname);
     }
 

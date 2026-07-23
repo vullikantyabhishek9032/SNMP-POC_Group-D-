@@ -2,10 +2,12 @@ package com.poc.alert_read_service.controller;
 
 import com.poc.alert_read_service.dto.DashboardSummary;
 import com.poc.alert_read_service.service.DashboardService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@CrossOrigin(origins ="http://localhost:3000")
 public class DashboardController {
 
     private final DashboardService dashboardService;
