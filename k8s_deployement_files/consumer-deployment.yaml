@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: consumer-kafka-service
-          image: 10.161.5.175:5000/consumer-kafka-service:5
+          image: 10.161.5.175:5000/consumer-kafka-service:7
           imagePullPolicy: Always
           ports:
             - containerPort: 8086
