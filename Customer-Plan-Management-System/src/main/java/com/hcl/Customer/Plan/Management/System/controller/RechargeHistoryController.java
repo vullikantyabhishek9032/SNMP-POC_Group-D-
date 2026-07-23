@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/recharges")
+@CrossOrigin(origins ={"http://localhost:3000","http://localhost:30080"})
 public class RechargeHistoryController {
 
     @Autowired
