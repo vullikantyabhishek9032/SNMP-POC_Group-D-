@@ -1,4 +1,4 @@
-const baseurl = `http://localhost:8089`
+const baseurl = `http://10.161.5.175:8089`
 
 // 
 // GET https://fakestoreapi.com/products
@@ -6,7 +6,7 @@ const baseurl = `http://localhost:8089`
 
 // demo url 
 
-const demoURL = `http://localhost:8080`
+const demoURL = `http://10.161.5.175:30090`
 
 // Health Endpoint
 
@@ -51,9 +51,9 @@ export const AlertURL = `${baseurl}/users`;
 
 export const Todaydemo = `http://10.161.5.175:8089`
 
- export const eventsUrl = `http://10.161.5.175:8086`
+export const eventsUrl = `http://10.161.5.175:30096`
 
-export const userDataUrl = `http://10.161.5.175:9991`
+export const userDataUrl = `http://10.161.5.175:30097`
 
 
 
