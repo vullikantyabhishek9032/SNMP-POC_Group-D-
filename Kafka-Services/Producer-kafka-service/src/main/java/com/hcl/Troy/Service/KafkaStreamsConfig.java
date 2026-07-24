@@ -21,7 +21,7 @@ public class KafkaStreamsConfig {
 
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "usage-stream-app");
 
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "10.161.5.175:9092");
 
 
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.StringSerde.class);
