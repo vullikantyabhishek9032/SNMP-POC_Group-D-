@@ -46,7 +46,7 @@ public class KafkaConsumerConfig {
         Map<String, Object> props = new HashMap<>();
 
         props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092");
+                "10.161.5.175:9092");
 
         props.put(ConsumerConfig.GROUP_ID_CONFIG,
                 "alarm-group");
@@ -87,7 +87,7 @@ public class KafkaConsumerConfig {
 
         props.put(
                 ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-                "localhost:9092");
+                "10.161.5.175:9092");
 
         props.put(
                 ConsumerConfig.GROUP_ID_CONFIG,
@@ -123,7 +123,7 @@ public class KafkaConsumerConfig {
 
         props.put(StreamsConfig.APPLICATION_ID_CONFIG, "recommendation-streams");
 
-        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "10.161.5.175:9092");
 
         props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass());
 
