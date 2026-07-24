@@ -8,6 +8,6 @@ spec:
     app: kafka-producer
   ports:
     - protocol: TCP
-      port: 8081        # service port
-      targetPort: 8081  # container port
+      port: 8083        # service port
+      targetPort: 8083  # container port
       nodePort: 30091   # external access port
