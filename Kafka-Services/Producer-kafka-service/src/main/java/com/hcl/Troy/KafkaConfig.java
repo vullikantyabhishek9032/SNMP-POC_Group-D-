@@ -210,7 +210,7 @@ public class KafkaConfig {
 
                         System.out.println("Mail is going to send");
 
-                        emailService.sendRecommendationMail(recommendation);
+                        //emailService.sendRecommendationMail(recommendation);
 
                         System.out.println("Mail sent ");
 
