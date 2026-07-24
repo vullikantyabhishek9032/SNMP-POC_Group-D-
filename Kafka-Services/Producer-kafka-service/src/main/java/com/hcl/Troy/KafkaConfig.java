@@ -12,6 +12,8 @@ import org.apache.kafka.common.serialization.StringSerializer;
 import org.apache.kafka.streams.StreamsBuilder;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.KStream;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +30,8 @@ import java.util.Map;
 
 @Configuration
 public class KafkaConfig {
+
+    private static  final Logger log = LoggerFactory.getLogger(KafkaConfig.class);
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Autowired
     private PlanService planService;
@@ -159,22 +163,23 @@ public class KafkaConfig {
                     try {
 
                         CustomerUsage usage = objectMapper.readValue(value, CustomerUsage.class);
-                        System.out.println("Customer : " + usage.getCustomerId());
-                        System.out.println("Usage : " + usage.getUsage());
-                        System.out.println("Timestamp : " + usage.getTimestamp());
+                        log.info("Customer : " + usage.getCustomerId());
+                        log.info("Usage : " + usage.getUsage());
+                        log.info("Timestamp : " + usage.getTimestamp());
 
                         if (usage.getUsage() > 1000) {
-                            System.out.println("RECOMMENDATION GENERATED");
+                            log.info("RECOMMENDATION GENERATED");
                         }
 
                         Timestamp threeMonthsAgo = Timestamp.valueOf(LocalDateTime.now().minusMonths(3));
 
-                        System.out.println("Current Record Time : " + usage.getTimestamp());
-                        System.out.println("Three Months Ago    : " + threeMonthsAgo);
+
+                        log.info("Current Record Time : " + usage.getTimestamp());
+                        log.info("Three Months Ago    : " + threeMonthsAgo);
 
                         boolean result = usage.getUsage() != null && usage.getUsage() > 900 && usage.getTimestamp() != null && usage.getTimestamp().after(threeMonthsAgo);
 
-                        System.out.println("Filter Result : " + result);
+                        log.info("Filter Result : " + result);
 
                         return result;
                     } catch (Exception e) {
@@ -189,13 +194,9 @@ public class KafkaConfig {
             try {
 
                 CustomerUsage usage = objectMapper.readValue(value, CustomerUsage.class);
-
-                System.out.println("Customer : " + usage.getCustomerId());
-
-                System.out.println("Usage : " + usage.getUsage());
-
-                System.out.println("Timestamp : " + usage.getTimestamp());
-
+                log.info("Customer : " + usage.getCustomerId());
+                log.info("Usage : " + usage.getUsage());
+                log.info("Timestamp : " + usage.getTimestamp());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -208,11 +209,16 @@ public class KafkaConfig {
 
                         RecommendationDTO recommendation = planService.getRecommendation(usage);
 
-                        System.out.println("Mail is going to send");
+                        log.info("Mail is going to send");
 
-                        //emailService.sendRecommendationMail(recommendation);
+                        try {
+                            emailService.sendRecommendationMail(recommendation);
+                            log.info("Mail sent ");
+                        } catch (Exception e) {
+                            log.error("Email failed", e);
 
-                        System.out.println("Mail sent ");
+                        }
+                        
 
                         if (recommendation != null) {
 
